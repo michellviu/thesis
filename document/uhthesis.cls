@@ -22,8 +22,9 @@
 \RequirePackage{footmisc}
 \RequirePackage{csquotes}
 \RequirePackage[
-	style=apa,
-	citestyle=authoryear,
+	style=numeric,
+	citestyle=numeric,
+	sorting=none,
   hyperref=true,
 	backref=true
 	]{biblatex}
@@ -77,7 +78,7 @@
 \DeclareCiteCommand{\cite}
   {\usebibmacro{prenote}}
   {\usebibmacro{citeindex}%
-   \printtext[bibhyperref]{\usebibmacro{cite}}}
+   \printtext[bibhyperref]{[\usebibmacro{cite}]}}
   {\multicitedelim}
   {\usebibmacro{postnote}}
 
