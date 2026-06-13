@@ -8,20 +8,65 @@ el comportamiento interno de cada componente, los mecanismos de seguridad implem
 algorítmicos obtenidos.
 
 \section{Fundamentos del Desarrollo de Software Moderno}
-El desarrollo de \textit{software} moderno se organiza en torno a principios de separación de responsabilidades, mantenibilidad y escalabilidad. En lugar de construir sistemas monolíticos donde toda la lógica reside en un único bloque de código fuertemente acoplado, la industria de la ingeniería de \textit{software} ha convergido hacia arquitecturas en capas que permiten que cada componente del sistema posea una responsabilidad bien definida y acotada~\cite{martin_clean_architecture}. Esta convergencia no es casual: responde a décadas de experiencia acumulada en el mantenimiento de sistemas de gran envergadura, donde el acoplamiento excesivo entre módulos derivaba en costos de evolución exponencialmente crecientes y en una fragilidad estructural incompatible con los ciclos de desarrollo ágiles que demanda la práctica contemporánea.
+El desarrollo de \textit{software} moderno se organiza en torno a principios de separación de 
+responsabilidades, mantenibilidad y escalabilidad. En lugar de construir sistemas monolíticos donde toda 
+la lógica reside en un único bloque de código fuertemente acoplado, la industria de la ingeniería 
+de \textit{software} ha convergido hacia arquitecturas en capas que permiten que cada componente del 
+sistema posea una responsabilidad bien definida y acotada~\cite{martin_clean_architecture}. Esta 
+convergencia no es casual: responde a décadas de experiencia acumulada en el mantenimiento de sistemas 
+de gran envergadura, donde el acoplamiento excesivo entre módulos derivaba en costos de evolución 
+exponencialmente crecientes y en una fragilidad estructural incompatible con los ciclos de desarrollo 
+ágiles que demanda la práctica contemporánea.
 
 \subsection{El Paradigma de Capas y la Arquitectura Limpia}
-Una aplicación web contemporánea típicamente se divide en tres grandes áreas o capas lógicas: la capa de presentación (\textit{frontend})\footnote{Frontend: capa de interfaz que presenta la información y permite la interacción del usuario con el sistema.}, la capa de lógica de negocio y exposición de servicios (\textit{backend})\footnote{Backend: capa del servidor responsable de la lógica de negocio, persistencia y exposición de servicios.}, y la capa de persistencia (base de datos)~\cite{client_server}. Esta tripartición lógica constituye el punto de partida para arquitecturas más refinadas que establecen fronteras contractuales entre los componentes del sistema.
+Una aplicación web contemporánea típicamente se divide en tres grandes áreas o capas lógicas: la capa de 
+presentación (\textit{frontend}), la capa de lógica de negocio y exposición de servicios 
+(\textit{backend}), y la capa de persistencia (base de datos). Esta tripartición lógica constituye el 
+punto de partida para arquitecturas más refinadas que establecen fronteras contractuales entre 
+los componentes del sistema.
 
-La Arquitectura Limpia (\textit{Clean Architecture}), formalizada por Robert C. Martin~\cite{martin_clean_architecture}, propone organizar el código en capas concéntricas donde las dependencias de \textit{software} siempre apuntan hacia el interior, obedeciendo la \textbf{regla de dependencia}: ningún elemento de una capa interna puede tener conocimiento alguno de las capas externas. El núcleo del sistema ---el Dominio--- no conoce ni depende de ninguna tecnología externa, motor de base de datos o marco de trabajo de interfaz. Las capas externas (como la infraestructura y la interfaz de usuario) dependen del dominio, pero el dominio jamás depende de ellas. Esta inversión deliberada de las dependencias garantiza que las reglas de negocio del entorno clínico puedan evolucionar de manera independiente de los detalles técnicos y tecnológicos subyacentes, una propiedad especialmente valiosa en el contexto de una plataforma médica cuyas necesidades funcionales se encuentran en constante refinamiento.
+La Arquitectura Limpia (\textit{Clean Architecture}), formalizada por Robert C. Martin~\cite{martin_clean_architecture}, \
+propone organizar el código en capas concéntricas donde las dependencias de \textit{software} siempre 
+apuntan hacia el interior, obedeciendo la \textbf{regla de dependencia}: ningún elemento de una capa 
+interna puede tener conocimiento alguno de las capas externas. El núcleo del sistema ---el Dominio--- no 
+conoce ni depende de ninguna tecnología externa, motor de base de datos o marco de trabajo de interfaz. 
+Las capas externas (como la infraestructura y la interfaz de usuario) dependen del dominio, pero el 
+dominio jamás depende de ellas. Esta inversión deliberada de las dependencias garantiza que las reglas 
+de negocio del entorno puedan evolucionar de manera independiente de los detalles técnicos y 
+tecnológicos subyacentes, una propiedad especialmente valiosa en el contexto de una plataforma médica 
+cuyas necesidades funcionales se encuentran en constante refinamiento.
 
 \subsection{Patrones Estructurales Fundamentales}
-Para abstraer el acceso a los datos de la lógica central del sistema, se emplea el \textbf{Patrón Repositorio} (\textit{Repository Pattern}), documentado por Fowler~\cite{fowler_peaa} como parte de los patrones de arquitectura de fuentes de datos. Este patrón actúa como mediador entre la capa de dominio y la capa de mapeo de datos, proporcionando una interfaz que simula una colección en memoria de objetos del dominio. El código de negocio interactúa con operaciones abstractas como \texttt{GetByIdAsync}, \texttt{AddAsync} o \texttt{DeleteAsync}, sin conocer los detalles de la tecnología de persistencia subyacente. La implementación concreta ---ya sea mediante \textit{Entity Framework Core}, consultas SQL directas u otro mecanismo--- reside exclusivamente en la capa de infraestructura, preservando así la independencia del dominio.
+Para abstraer el acceso a los datos de la lógica central del sistema, se emplea 
+el \textbf{Patrón Repositorio} (\textit{Repository Pattern}), documentado por Martin Fowler~\cite{fowler_peaa} 
+como parte de los patrones de arquitectura de fuentes de datos. Este patrón actúa como mediador entre la 
+capa de dominio y la capa de mapeo de datos, proporcionando una interfaz que simula una colección en 
+memoria de objetos del dominio. El código de negocio interactúa con operaciones abstractas 
+como \texttt{GetByIdAsync}, \texttt{AddAsync} o \texttt{DeleteAsync}, sin conocer los detalles de la 
+tecnología de persistencia subyacente. La implementación concreta ---ya sea 
+mediante \textit{Entity Framework Core}, consultas SQL directas u otro mecanismo--- reside exclusivamente 
+en la capa de infraestructura, preservando así la independencia del dominio.
 
-Complementariamente, se implementa de forma extensiva la \textbf{Inyección de Dependencias} (\textit{Dependency Injection}, DI), un patrón formalizado por Fowler~\cite{fowler_di} que constituye una forma específica del principio de inversión de control. En lugar de que los objetos instancien internamente sus colaboradores, las dependencias se proveen desde el exterior por medio de un contenedor de servicios que gestiona su ciclo de vida~\cite{dotnet_di_docs}. El marco de trabajo ASP.NET Core integra nativamente un contenedor de DI que soporta tres modalidades de ciclo de vida: \textit{Transient} (una instancia por solicitud de servicio), \textit{Scoped} (una instancia por ámbito de petición HTTP) y \textit{Singleton} (una única instancia compartida durante toda la vida de la aplicación). Esta gestión automatizada facilita el desacoplamiento entre clases, posibilita la escritura de pruebas unitarias robustas y garantiza la correcta liberación de recursos costosos como las conexiones a bases de datos.
+Complementariamente, se implementa de forma extensiva la \textbf{Inyección de Dependencias} 
+(\textit{Dependency Injection}, DI), un patrón formalizado por Fowler~\cite{fowler_di} que constituye 
+una forma específica del principio de inversión de control. En lugar de que los objetos instancien 
+internamente sus colaboradores, las dependencias se proveen desde el exterior por medio de un contenedor 
+de servicios que gestiona su ciclo de vida~\cite{dotnet_di_docs}. El marco de trabajo ASP.NET Core integra 
+nativamente un contenedor de DI que soporta tres modalidades de ciclo de vida: \textit{Transient} 
+(una instancia por solicitud de servicio), \textit{Scoped} (una instancia por ámbito de petición HTTP) y 
+\textit{Singleton} (una única instancia compartida durante toda la vida de la aplicación). Esta gestión 
+automatizada facilita el desacoplamiento entre clases, posibilita la escritura de pruebas unitarias 
+robustas y garantiza la correcta liberación de recursos costosos como las conexiones a bases de datos.
 
 \section{Arquitectura General del Sistema DermaUH}
-El sistema de la base de imágenes se encuentra construido integralmente sobre la plataforma .NET en su versión 10~\cite{aspnet_core_docs}, utilizando el lenguaje de programación C\# 13~\cite{csharp_13_docs}. A nivel de código fuente, el proyecto se organiza como un repositorio unificado (\textit{monorepo}) compuesto por dos aplicaciones principales estrechamente interconectadas: la Interfaz de Programación de Aplicaciones (API REST\footnote{REST (\textit{Representational State Transfer}): estilo arquitectónico para sistemas distribuidos definido por Fielding~\cite{fielding_rest}, basado en recursos identificados por URIs y manipulados mediante los métodos estándar del protocolo HTTP.}) y la aplicación cliente web. La estructura de directorios refleja la separación arquitectónica descrita:
+El sistema de la base de imágenes se encuentra construido integralmente sobre la plataforma .NET en su 
+versión 10~\cite{aspnet_core_docs}, utilizando el lenguaje de programación C\# 13~\cite{csharp_13_docs}. 
+A nivel de código fuente, el proyecto se organiza como un repositorio unificado (\textit{monorepo}) 
+compuesto por dos aplicaciones principales estrechamente interconectadas: la Interfaz de Programación de 
+Aplicaciones (API REST\footnote{REST (\textit{Representational State Transfer}): estilo arquitectónico 
+para sistemas distribuidos definido por Fielding~\cite{fielding_rest}, basado en recursos identificados 
+por URIs y manipulados mediante los métodos estándar del protocolo HTTP.}) y la aplicación cliente web. 
+La estructura de directorios refleja la separación arquitectónica descrita:
 
 \begin{lstlisting}[caption={Estructura de directorios del monorepo DermaUH.},label={lst:dir_structure},language={}]
 apps/
@@ -33,41 +78,106 @@ apps/
   web/                         # Blazor Server (frontend)
 \end{lstlisting}
 
-El flujo de dependencias entre módulos refleja estrictamente los preceptos de la Arquitectura Limpia: la capa de presentación consume la API a través de llamadas de red HTTP estándar, sin acoplamiento directo al código del servidor. A su vez, la API delega el procesamiento algorítmico a la capa de Aplicación, la cual interactúa exclusivamente con las abstracciones definidas en la capa de Dominio. Paralelamente, la capa de Infraestructura materializa las implementaciones concretas de dichas abstracciones, estableciendo la conexión con el motor de base de datos PostgreSQL~\cite{postgresql_docs} y gestionando el almacenamiento físico de los archivos de imagen en el sistema de ficheros del servidor.
+El flujo de dependencias entre módulos refleja estrictamente los preceptos de la Arquitectura Limpia: la 
+capa de presentación consume la API a través de llamadas de red HTTP estándar, sin acoplamiento directo al 
+código del servidor. A su vez, la API delega el procesamiento algorítmico a la capa de Aplicación, la cual 
+interactúa exclusivamente con las abstracciones definidas en la capa de Dominio. Paralelamente, la capa de 
+Infraestructura materializa las implementaciones concretas de dichas abstracciones, estableciendo la 
+conexión con el motor de base de datos PostgreSQL~\cite{postgresql_docs} y gestionando el almacenamiento 
+físico de los archivos de imagen en el sistema de ficheros del servidor.
 
-Esta organización garantiza que las dependencias fluyan unidireccionalmente desde las capas externas hacia el núcleo del dominio, de modo que una eventual sustitución del motor de base de datos o del marco de trabajo de interfaz no requeriría modificación alguna en la lógica clínica central del sistema.
+Esta organización garantiza que las dependencias fluyan unidireccionalmente desde las capas externas hacia 
+el núcleo del dominio, de modo que una eventual sustitución del motor de base de datos o del marco de 
+trabajo de interfaz no requeriría modificación alguna en la lógica central del sistema.
+
 \section{Implementación del Servidor (Backend)}
-El servidor o \textit{backend} de DermaUH está implementado como una \textit{ASP.NET Core Web API}~\cite{aspnet_core_docs}. El punto de entrada principal del aplicativo, materializado en el archivo \texttt{Program.cs} del proyecto \texttt{WebApi.DermaImage}, se encarga de configurar el canal de procesamiento secuencial de peticiones HTTP, conocido en la terminología del marco de trabajo como \textit{middleware pipeline}~\cite{aspnet_middleware_docs}. Cada componente de \textit{middleware} en este canal recibe la petición entrante, ejecuta su lógica específica y decide si propagar la solicitud al siguiente componente o cortocircuitar la cadena. El orden de ensamblaje resulta determinante para el comportamiento correcto del sistema, y en DermaUH se configura de la siguiente manera:
+El servidor o \textit{backend} de DermaUH Images está implementado como una 
+\textit{ASP.NET Core Web API}~\cite{aspnet_core_docs}. 
+El punto de entrada principal del aplicativo, materializado en el archivo \texttt{Program.cs} del 
+proyecto \texttt{WebApi.DermaImage}, se encarga de configurar el canal de procesamiento secuencial de 
+peticiones HTTP, conocido en la terminología del marco de trabajo como 
+\textit{middleware pipeline}~\cite{aspnet_middleware_docs}. Cada componente de \textit{middleware} en este 
+canal recibe la petición entrante, ejecuta su lógica específica y decide si propagar la solicitud al 
+siguiente componente o cortocircuitar la cadena. El orden de ensamblaje resulta determinante para el 
+comportamiento correcto del sistema, y en DermaUH se configura de la siguiente manera:
 
 \begin{enumerate}
-    \item \textbf{ApiRequestLoggingMiddleware}: Componente personalizado que registra cada petición con su identificador de traza (\texttt{TraceId}), método HTTP, ruta, identificador del usuario extraído del JWT, tiempo de ejecución y código de estado de la respuesta. Para errores con código 5xx, el nivel de registro escala automáticamente a \texttt{LogError}, facilitando la detección temprana de anomalías en el entorno de producción.
-    \item \textbf{Política CORS} (\textit{Cross-Origin Resource Sharing}): Configura los orígenes, métodos y cabeceras permitidos para las solicitudes entre dominios.
+    \item \textbf{ApiRequestLoggingMiddleware}: Componente personalizado que registra cada petición con 
+    su identificador de traza (\texttt{TraceId}), método HTTP, ruta, identificador del usuario extraído 
+    del JWT, tiempo de ejecución y código de estado de la respuesta. Para errores con código 5xx, el nivel 
+    de registro escala automáticamente a \texttt{LogError}, facilitando la detección temprana de anomalías 
+    en el entorno de producción.
+    \item \textbf{Política CORS} (\textit{Cross-Origin Resource Sharing}): Configura los orígenes, métodos 
+    y cabeceras permitidos para las solicitudes entre dominios.
     \item \textbf{Redirección HTTPS}: Fuerza la comunicación cifrada en todos los intercambios.
-    \item \textbf{Autenticación}: Valida la identidad del solicitante mediante la verificación del token JWT.
-    \item \textbf{Autorización}: Verifica que el solicitante autenticado posea los permisos necesarios para acceder al recurso solicitado.
+    \item \textbf{Autenticación}: Valida la identidad del solicitante mediante la verificación del 
+    token JWT.
+    \item \textbf{Autorización}: Verifica que el solicitante autenticado posea los permisos necesarios 
+    para acceder al recurso solicitado.
     \item \textbf{Controladores}: Enrutan la petición validada al controlador REST correspondiente.
 \end{enumerate}
 
-Una decisión de diseño fundamental en esta área es la política estricta de seguridad por defecto (\textit{secure-by-default})~\cite{owasp_secure_default}: todo recurso de la red y terminal (\textit{endpoint}) requiere autenticación formal a menos que esté explícitamente marcado como de acceso público mediante el atributo \texttt{[AllowAnonymous]}. Esta política se implementa mediante una \texttt{FallbackPolicy} en la configuración de autorización del marco de trabajo, lo cual invierte el paradigma tradicional donde los recursos son públicos por defecto y deben protegerse individualmente. El enfoque adoptado minimiza la superficie de ataque al garantizar que un olvido del desarrollador al crear un nuevo terminal nunca resulte en la exposición inadvertida de datos clínicos sensibles.
+Una decisión de diseño fundamental en esta área es la política estricta de seguridad por 
+defecto (\textit{secure-by-default})~\cite{owasp_secure_default}: todo recurso de la red y 
+terminal (\textit{endpoint}) requiere autenticación formal a menos que esté explícitamente marcado 
+como de acceso público mediante el atributo \texttt{[AllowAnonymous]}. Esta política se implementa 
+mediante una \texttt{FallbackPolicy} en la configuración de autorización del marco de trabajo, lo 
+cual invierte el paradigma tradicional donde los recursos son públicos por defecto y deben protegerse 
+individualmente. El enfoque adoptado minimiza la superficie de ataque al garantizar que un olvido del 
+desarrollador al crear un nuevo terminal nunca resulte en la exposición inadvertida de datos clínicos 
+sensibles.
 
-Adicionalmente, para simplificar el despliegue de nuevas versiones y garantizar la coherencia del esquema relacional, la base de datos se actualiza automáticamente en la etapa de arranque del servidor, aplicando secuencialmente todas las migraciones estructurales pendientes~\cite{ef_core_migrations}. Este mecanismo elimina la necesidad de ejecutar comandos manuales de migración durante el despliegue, reduciendo significativamente el riesgo de inconsistencias entre el modelo de datos del código y el esquema físico de la base de datos.
+Adicionalmente, para simplificar el despliegue de nuevas versiones y garantizar la coherencia del 
+esquema relacional, la base de datos se actualiza automáticamente en la etapa de arranque del servidor, 
+aplicando secuencialmente todas las migraciones estructurales pendientes~\cite{ef_core_migrations}. Este 
+mecanismo elimina la necesidad de ejecutar comandos manuales de migración durante el despliegue, 
+reduciendo significativamente el riesgo de inconsistencias entre el modelo de datos del código y el 
+esquema físico de la base de datos.
 
 \subsection{Capa de Dominio (\texttt{Domain.DermaImage})}
-La capa de Dominio constituye el estrato más interno y aislado de la arquitectura, materializando el principio de independencia tecnológica propugnado por la Arquitectura Limpia~\cite{martin_clean_architecture}. Este módulo no contiene referencia alguna a marcos de trabajo externos de persistencia, comunicación o interfaz; su única dependencia significativa es \texttt{IdentityUser<Guid>} del subsistema ASP.NET Core Identity~\cite{aspnet_identity}, decisión justificada por la necesidad de integrar el modelo de usuario con el sistema estandarizado de gestión de identidades.
+La capa de Dominio constituye el estrato más interno y aislado de la arquitectura, materializando el 
+principio de independencia tecnológica propugnado por la Arquitectura 
+Limpia~\cite{martin_clean_architecture}. Este módulo no contiene referencia alguna a marcos de trabajo 
+externos de persistencia, comunicación o interfaz; su única dependencia significativa es 
+\texttt{IdentityUser<Guid>} del subsistema ASP.NET Core Identity~\cite{aspnet_identity}, decisión 
+justificada por la necesidad de integrar el modelo de usuario con el sistema estandarizado de gestión 
+de identidades.
 
 El dominio encapsula los siguientes elementos fundamentales:
 
 \begin{itemize}
-    \item \textbf{Entidades}: \texttt{DermaImg} (representación computacional de una lesión cutánea), \texttt{User} (identidad de los usuarios del ecosistema), \texttt{DownloadRequest} (solicitud de descarga autorizada) y \texttt{BaseEntity} (clase base que provee campos de auditoría comunes: \texttt{Id}, \texttt{CreatedAt}, \texttt{UpdatedAt} e \texttt{IsDeleted}).
-    \item \textbf{Enumeraciones tipadas}: \texttt{DiagnosisCategory}, \texttt{ImageType}, \texttt{UserRole}, \texttt{DownloadRequestStatus}, entre otras, que representan dominios finitos de valores clínicos y administrativos.
-    \item \textbf{Interfaces de repositorio}: \texttt{IRepository<T>} (contrato genérico para operaciones CRUD), \texttt{IDermaImgRepository} (contrato especializado con operaciones de filtrado clínico) e \texttt{IUserRepository} (contrato para operaciones de identidad).
-    \item \textbf{Interfaces de servicio}: \texttt{IJwtService}, \texttt{IEmailService}, \texttt{IUserService}, que definen los contratos de los servicios transversales sin prescribir su implementación tecnológica.
+    \item \textbf{Entidades}: \texttt{DermaImg} (representación computacional de una lesión cutánea), 
+    \texttt{User} (identidad de los usuarios del ecosistema), \texttt{DownloadRequest} 
+    (solicitud de descarga autorizada) y \texttt{BaseEntity} 
+    (clase base que provee campos de auditoría comunes: \texttt{Id}, \texttt{CreatedAt}, 
+    \texttt{UpdatedAt} e \texttt{IsDeleted}).
+    \item \textbf{Enumeraciones tipadas}: \texttt{DiagnosisCategory}, \texttt{ImageType}, 
+    \texttt{UserRole}, \texttt{DownloadRequestStatus}, entre otras, que representan dominios 
+    finitos de valores clínicos y administrativos.
+    \item \textbf{Interfaces de repositorio}: \texttt{IRepository<T>} 
+    (contrato genérico para operaciones CRUD), \texttt{IDermaImgRepository} (contrato especializado 
+    con operaciones de filtrado clínico) e \texttt{IUserRepository} (contrato para operaciones 
+    de identidad).
+    \item \textbf{Interfaces de servicio}: \texttt{IJwtService}, \texttt{IEmailService}, 
+    \texttt{IUserService}, que definen los contratos de los servicios transversales sin prescribir su 
+    implementación tecnológica.
 \end{itemize}
 
-La entidad central \texttt{DermaImg} encapsula de forma normalizada más de 35 atributos clínicos organizados en categorías semánticas: identificación técnica del archivo, contexto de adquisición de la imagen, demografía anonimizada del paciente, características clínicas de la lesión inspeccionada visualmente, clasificación diagnóstica con su método de confirmación y, cuando corresponde, indicadores histológicos específicos para melanoma (profundidad de Breslow, índice mitótico, presencia de ulceración). Esta riqueza de metadatos, cuya justificación para el entrenamiento de modelos de inteligencia artificial fue argumentada en el Capítulo~\ref{ch:proposal}, se preserva íntegramente en la implementación del dominio.
+La entidad central \texttt{DermaImg} encapsula de forma normalizada más de 30 atributos clínicos 
+organizados en categorías semánticas: identificación técnica del archivo, contexto de adquisición de 
+la imagen, demografía anonimizada del paciente, características clínicas de la lesión inspeccionada 
+visualmente, clasificación diagnóstica con su método de confirmación y, cuando corresponde, indicadores 
+histológicos específicos para melanoma (profundidad de Breslow, índice mitótico, presencia de ulceración). 
+Esta riqueza de metadatos, cuya justificación para el entrenamiento de modelos de inteligencia artificial 
+fue argumentada en el Capítulo~\ref{ch:proposal}, se preserva íntegramente en la implementación del 
+dominio.
 
 \subsection{Capa de Aplicación (\texttt{Application.DermaImage})}
-La capa de Aplicación concentra y orquesta la lógica clínica y de seguridad del sistema mediante el \textbf{patrón Manager}, una variante del patrón \textit{Façade} documentado por Gamma et al.~\cite{gamma_design_patterns}. Cada \textit{Manager} actúa como punto de entrada unificado para un conjunto cohesivo de casos de uso, coordinando de manera atómica la interacción entre repositorios, servicios de infraestructura y reglas de validación. Los \textit{Managers} implementados son:
+La capa de Aplicación concentra y orquesta la lógica clínica y de seguridad del sistema mediante 
+el \textbf{patrón Manager}, una variante del patrón \textit{Façade} documentado por Erich Gamma ~\cite{gamma_design_patterns}.
+Cada \textit{Manager} actúa como punto de entrada unificado 
+para un conjunto cohesivo de casos de uso, coordinando de manera atómica la interacción entre 
+repositorios, servicios de infraestructura y reglas de validación. Los \textit{Managers} implementados son:
 
 \begin{longtable}{|p{4cm}|p{10.5cm}|}
 \hline
@@ -78,37 +188,63 @@ La capa de Aplicación concentra y orquesta la lógica clínica y de seguridad d
 \textbf{Manager} & \textbf{Responsabilidad} \\
 \hline
 \endhead
-\texttt{DermaImgManager} & Orquesta la lógica de negocio de imágenes, incluyendo la creación con validación clínica, la gestión de visibilidad y el flujo de revisión por parte de auditores. \\
+\texttt{DermaImgManager} & Orquesta la lógica de negocio de imágenes, incluyendo la creación con validación 
+clínica, la gestión de visibilidad y el filtrado avanzado de imágenes. \\
 \hline
-\texttt{AuthManager} & Gestiona el ciclo completo de identidad: registro con confirmación por correo electrónico, inicio de sesión local, autenticación delegada mediante Google OAuth 2.0 y orquestación de la generación de JWT. \\
+\texttt{AuthManager} & Gestiona el ciclo completo de identidad: registro con confirmación por correo 
+electrónico, inicio de sesión local, autenticación delegada mediante Google OAuth 2.0 y orquestación 
+de la generación de JWT. \\
 \hline
-\texttt{UserManager} & Administra las operaciones sobre usuarios: activación, desactivación, eliminación lógica, asignación y revocación de roles, y aprobación o rechazo de registros pendientes. \\
+\texttt{UserManager} & Administra las operaciones sobre usuarios: activación, desactivación, eliminación 
+lógica, asignación y revocación de roles, y aprobación o rechazo de registros pendientes. \\
 \hline
-\texttt{DownloadManager} & Controla el flujo de autorización para descargas masivas, desde la solicitud inicial hasta la aprobación o denegación administrativa. \\
+\texttt{DownloadManager} & Controla el flujo de autorización para descargas masivas, desde la solicitud 
+inicial hasta la aprobación o denegación administrativa. \\
 \hline
-\texttt{StatisticsManager} & Calcula y agrega las métricas estadísticas del repositorio: distribuciones diagnósticas, demográficas y geográficas. \\
+\texttt{StatisticsManager} & Calcula y agrega las métricas estadísticas del repositorio: distribuciones 
+diagnósticas, demográficas y geográficas. \\
 \hline
-\texttt{InstitutionManager} & Gestiona el directorio de instituciones contribuyentes, derivado dinámicamente de los metadatos institucionales de las imágenes registradas. \\
+\texttt{InstitutionManager} & Gestiona el directorio de instituciones contribuyentes, derivado dinámicamente 
+de los metadatos institucionales de las imágenes registradas. \\
 \hline
 \end{longtable}
 
-Todos los servicios de esta capa se registran en el contenedor de inyección de dependencias mediante el método de extensión \texttt{AddApplication()}, garantizando una configuración centralizada y declarativa. La capa define además los \textbf{DTOs} (\textit{Data Transfer Objects}), objetos planos diseñados exclusivamente para la transferencia de datos entre capas, que previenen la exposición directa de las entidades del dominio hacia los clientes externos y permiten controlar con precisión qué atributos se incluyen en cada respuesta de la API.
+Todos los servicios de esta capa se registran en el contenedor de inyección de dependencias mediante el 
+método de extensión \texttt{AddApplication()}, garantizando una configuración centralizada y declarativa. 
+La capa define además los \textbf{DTOs} (\textit{Data Transfer Objects}), objetos planos diseñados 
+exclusivamente para la transferencia de datos entre capas, que previenen la exposición directa de las 
+entidades del dominio hacia los clientes externos y permiten controlar con precisión qué atributos se 
+incluyen en cada respuesta de la API.
 
 \subsection{Capa de Infraestructura (\texttt{Infrastructure.DermaImage})}
-La capa de Infraestructura es la responsable de implementar las interfaces abstractas definidas en el dominio utilizando tecnologías concretas. Su método de extensión \texttt{AddInfrastructure()} registra todos los servicios técnicos en el contenedor de DI, incluyendo:
+La capa de Infraestructura es la responsable de implementar las interfaces abstractas definidas en el 
+dominio utilizando tecnologías concretas. Su método de extensión \texttt{AddInfrastructure()} registra 
+todos los servicios técnicos en el contenedor de DI, incluyendo:
 
 \begin{itemize}
-    \item \textbf{Entity Framework Core 9} con el proveedor \textbf{Npgsql}~\cite{npgsql_docs} para la comunicación relacional con PostgreSQL, proporcionando un mapeo objeto-relacional completo que traduce las operaciones sobre objetos C\# a sentencias SQL optimizadas.
-    \item \textbf{ASP.NET Core Identity}~\cite{aspnet_identity} para la gestión integral de usuarios, roles, contraseñas hasheadas y tokens de seguridad, apoyándose en algoritmos criptográficos estandarizados para el almacenamiento seguro de credenciales.
-    \item \textbf{MailKit}~\cite{mailkit_docs} para la construcción y el envío transaccional de notificaciones por correo electrónico mediante el protocolo SMTP, utilizado en los flujos de confirmación de cuenta, restablecimiento de contraseña y notificación de eventos administrativos.
-    \item \textbf{JwtService} para la generación y validación de tokens de acceso, configurado con los parámetros criptográficos apropiados.
-    \item \textbf{ImageUploadManager} para la gestión del almacenamiento físico de archivos de imagen en el sistema de ficheros del servidor.
+    \item \textbf{Entity Framework Core 9} con el proveedor \textbf{Npgsql}~\cite{npgsql_docs} para la 
+    comunicación relacional con PostgreSQL, proporcionando un mapeo objeto-relacional completo que traduce 
+    las operaciones sobre objetos C\# a sentencias SQL optimizadas.
+    \item \textbf{ASP.NET Core Identity}~\cite{aspnet_identity} para la gestión integral de usuarios, 
+    roles, contraseñas hasheadas y tokens de seguridad, apoyándose en algoritmos criptográficos 
+    estandarizados para el almacenamiento seguro de credenciales.
+    \item \textbf{MailKit}~\cite{mailkit_docs} para la construcción y el envío transaccional de 
+    notificaciones por correo electrónico mediante el protocolo SMTP, utilizado en los flujos de 
+    confirmación de cuenta, restablecimiento de contraseña y notificación de eventos administrativos.
+    \item \textbf{JwtService} para la generación y validación de tokens de acceso, configurado con los 
+    parámetros criptográficos apropiados.
+    \item \textbf{ImageUploadManager} para la gestión del almacenamiento físico de archivos de imagen en 
+    el sistema de ficheros del servidor.
 \end{itemize}
 
 \subsection{Controladores REST y Documentación de API}
-Los controladores constituyen el punto de entrada HTTP del sistema, exponiendo las capacidades del \textit{backend} hacia los clientes externos mediante métodos que responden a los verbos estándar del protocolo HTTP (\texttt{GET}, \texttt{POST}, \texttt{PUT}, \texttt{DELETE}). Cada controlador se asocia a un recurso del dominio y define una ruta base coherente con las convenciones REST~\cite{fielding_rest}:
+Los controladores constituyen el punto de entrada HTTP del sistema, exponiendo las capacidades 
+del \textit{backend} hacia los clientes externos mediante métodos que responden a los verbos estándar 
+del protocolo HTTP (\texttt{GET}, \texttt{POST}, \texttt{PUT}, \texttt{DELETE}). Cada controlador se 
+asocia a un recurso del dominio y define una ruta base coherente con las convenciones 
+REST~\cite{fielding_rest}:
 
-\begin{longtable}{|p{4cm}|p{3cm}|p{7.5cm}|}
+\begin{longtable}{|p{4.7cm}|p{3.5cm}|p{7.5cm}|}
 \hline
 \textbf{Controlador} & \textbf{Ruta Base} & \textbf{Función Principal} \\
 \hline
@@ -117,41 +253,88 @@ Los controladores constituyen el punto de entrada HTTP del sistema, exponiendo l
 \textbf{Controlador} & \textbf{Ruta Base} & \textbf{Función Principal} \\
 \hline
 \endhead
-\texttt{ImagesController} & \texttt{/api/images} & Operaciones CRUD sobre imágenes, previsualización, descarga individual y generación de archivos ZIP para descarga masiva. \\
+\texttt{ImagesController} & \texttt{/api/images} & Operaciones CRUD sobre imágenes, previsualización, 
+descarga individual y generación de archivos ZIP para descarga masiva. \\
 \hline
-\texttt{AuthController} & \texttt{/api/auth} & Flujos de autenticación: inicio de sesión local, registro, autenticación OAuth 2.0 con Google, gestión de perfil y restablecimiento de contraseña. \\
+\texttt{AuthController} & \texttt{/api/auth} & Flujos de autenticación: inicio de sesión local, registro, 
+autenticación OAuth 2.0 con Google, gestión de perfil y restablecimiento de contraseña. \\
 \hline
-\texttt{UsersController} & \texttt{/api/users} & Gestión administrativa de usuarios: listado paginado, asignación de roles, activación y eliminación lógica. \\
+\texttt{UsersController} & \texttt{/api/users} & Gestión administrativa de usuarios: listado paginado, 
+asignación de roles, activación y eliminación lógica. \\
 \hline
-\texttt{StatisticsController} & \texttt{/api/statistics} & Provisión de datos agregados para el cuadro de mando analítico. \\
+\texttt{StatisticsController} & \texttt{/api/statistics} & Provisión de datos agregados para el cuadro 
+de mando analítico. \\
 \hline
-\texttt{MetadataController} & \texttt{/api/metadata} & Catálogo del diccionario de metadatos clínicos y exportación del esquema en formato CSV. \\
+\texttt{MetadataController} & \texttt{/api/metadata} & Catálogo del diccionario de metadatos clínicos y 
+exportación del esquema en formato CSV. \\
 \hline
-\texttt{DownloadRequests-Controller} & \texttt{/api/download-requests} & Gestión del flujo de solicitudes de descarga autorizada. \\
+\texttt{DownloadRequests-Controller} & \texttt{/api/download-requests} & Gestión del flujo de solicitudes 
+de descarga autorizada. \\
 \hline
-\texttt{InstitutionsController} & \texttt{/api/institutions} & Directorio de instituciones médicas contribuyentes. \\
+\texttt{InstitutionsController} & \texttt{/api/institutions} & Directorio de instituciones médicas 
+contribuyentes. \\
 \hline
 \end{longtable}
 
-El sistema genera dinámicamente y expone una documentación detallada e interactiva de la API bajo el estándar global OpenAPI (\textit{OpenAPI Specification})~\cite{openapi_spec} mediante \textit{Swagger UI}~\cite{swagger_docs}. Esta documentación incluye la definición del esquema de seguridad Bearer JWT, lo que permite a desarrolladores terceros y auditores explorar, comprender y probar en vivo las operaciones de inserción de imágenes, extracción de metadatos y consultas analíticas directamente desde el navegador web, sin necesidad de herramientas adicionales.
+El sistema genera dinámicamente y expone una documentación detallada e interactiva de la API bajo el estándar 
+global OpenAPI (\textit{OpenAPI Specification})~\cite{openapi_spec} mediante 
+\textit{Swagger UI}~\cite{swagger_docs}. Esta documentación incluye la definición del esquema de seguridad 
+Bearer JWT, lo que permite a desarrolladores terceros y auditores explorar, comprender y probar en vivo las 
+operaciones de inserción de imágenes, extracción de metadatos y consultas analíticas directamente desde el 
+navegador web, sin necesidad de herramientas adicionales.
+
 \section{Implementación del Cliente Web (Frontend)}
-La interfaz de usuario principal de DermaUH para navegadores de escritorio y dispositivos móviles se desarrolla como una aplicación \textit{Blazor Server}~\cite{blazor_docs}. En este modelo tecnológico, la lógica y el estado de los componentes de interfaz se mantienen y ejecutan íntegramente en el servidor, mientras que las actualizaciones visuales del Modelo de Objetos del Documento (DOM) se sincronizan bidireccionalmente con el navegador del usuario en tiempo real, con latencias ínfimas, mediante una conexión persistente de \textit{WebSockets} gestionada por el subsistema SignalR~\cite{signalr_docs}. Este enfoque ofrece ventajas significativas para una plataforma médica: el código fuente de la lógica de interfaz nunca se expone al cliente, las imágenes clínicas se procesan en el entorno controlado del servidor, y la carga computacional en el dispositivo del usuario se reduce al mínimo, permitiendo el acceso desde equipos con recursos limitados.
+La interfaz de usuario principal de DermaUH Images para navegadores de escritorio y dispositivos móviles se 
+desarrolla como una aplicación \textit{Blazor Server}~\cite{blazor_docs}. En este modelo tecnológico, la 
+lógica y el estado de los componentes de interfaz se mantienen y ejecutan íntegramente en el servidor, 
+mientras que las actualizaciones visuales del Modelo de Objetos del Documento (DOM) se sincronizan 
+bidireccionalmente con el navegador del usuario en tiempo real, con latencias ínfimas, mediante una 
+conexión persistente de \textit{WebSockets} gestionada por el subsistema SignalR~\cite{signalr_docs}. 
+Este enfoque ofrece ventajas significativas para una plataforma médica: el código fuente de la lógica 
+de interfaz nunca se expone al cliente, las imágenes clínicas se procesan en el entorno controlado del 
+servidor, y la carga computacional en el dispositivo del usuario se reduce al mínimo, permitiendo el 
+acceso desde equipos con recursos limitados.
 
 \subsection{Comunicación Autenticada con la API}
-La aplicación cliente se comunica con la API REST a través de un \texttt{HttpClient}~\cite{dotnet_httpclient_docs} configurado con un \textit{handler} de delegación personalizado, el \texttt{AuthenticatedHttpClientHandler}, que intercepta transparente y sistemáticamente cada solicitud saliente para inyectar automáticamente la cabecera \texttt{Authorization: Bearer <token>}. Este mecanismo garantiza que toda comunicación entre el \textit{frontend} y la API se realice de forma autenticada sin requerir intervención explícita del desarrollador en cada invocación de servicio. La URL base de la API se configura externamente mediante el archivo \texttt{appsettings.json}, permitiendo la reconfiguración sin modificación del código compilado.
+La aplicación cliente se comunica con la API REST a través de un 
+\texttt{HttpClient}~\cite{dotnet_httpclient_docs} configurado con un \textit{handler} de delegación 
+personalizado, el \texttt{AuthenticatedHttpClientHandler}, que intercepta transparente y sistemáticamente 
+cada solicitud saliente para inyectar automáticamente la cabecera \texttt{Authorization: Bearer <token>}. 
+Este mecanismo garantiza que toda comunicación entre el \textit{frontend} y la API se realice de forma 
+autenticada sin requerir intervención explícita del desarrollador en cada invocación de servicio. 
+La URL base de la API se configura externamente mediante el archivo \texttt{appsettings.json}, 
+permitiendo la reconfiguración sin modificación del código compilado.
 
 \subsection{Interoperabilidad con JavaScript}
-Aunque el núcleo lógico de la interfaz se ejecuta en el servidor, el cliente incorpora rutinas asincrónicas en JavaScript (mediante la interfaz \texttt{IJSRuntime} de Blazor) para componentes puramente visuales y nativos del navegador que requieren acceso directo al DOM o a las APIs del navegador:
+Aunque el núcleo lógico de la interfaz se ejecuta en el servidor, el cliente incorpora rutinas asincrónicas 
+en JavaScript (mediante la interfaz \texttt{IJSRuntime} de Blazor) para componentes puramente visuales y 
+nativos del navegador que requieren acceso directo al DOM o a las APIs del navegador:
 
 \begin{itemize}
-    \item \textbf{\texttt{infiniteScroll.js}}: Implementa el patrón de desplazamiento infinito (\textit{infinite scroll}) en la galería de exploración de imágenes, utilizando la API nativa \texttt{IntersectionObserver}~\cite{mdn_intersection_observer} para detectar cuándo el usuario se aproxima al final de la lista visible y disparar automáticamente la carga del siguiente lote de imágenes desde el servidor, eliminando la necesidad de paginación manual.
-    \item \textbf{\texttt{auth.js}}: Gestiona la persistencia del token JWT en el almacenamiento local (\texttt{localStorage}) del navegador, garantizando la continuidad de la sesión entre recargas de página.
-    \item \textbf{\texttt{institutionsCarousel.js}}: Controla el carrusel visual de instituciones contribuyentes en la página principal.
-    \item \textbf{Google GSI Client}: Integra el botón de inicio de sesión con Google (\textit{Google Sign-In}) mediante la biblioteca oficial de identidad de Google~\cite{google_identity_docs}.
+    \item \textbf{\texttt{infiniteScroll.js}}: Implementa el patrón de desplazamiento infinito 
+    (\textit{infinite scroll}) en la galería de exploración de imágenes, utilizando la API nativa 
+    \texttt{IntersectionObserver}~\cite{mdn_intersection_observer} para detectar cuándo el usuario 
+    se aproxima al final de la lista visible y disparar automáticamente la carga del siguiente lote 
+    de imágenes desde el servidor, eliminando la necesidad de paginación manual.
+    \item \textbf{\texttt{auth.js}}: Gestiona la persistencia del token JWT en el almacenamiento local 
+    (\texttt{localStorage}) del navegador, garantizando la continuidad de la sesión entre recargas de página.
+    \item \textbf{\texttt{institutionsCarousel.js}}: Controla el carrusel visual de instituciones 
+    contribuyentes en la página principal.
+    \item \textbf{Google GSI Client}: Integra el botón de inicio de sesión con Google 
+    (\textit{Google Sign-In}) mediante la biblioteca oficial de identidad de 
+    Google~\cite{google_identity_docs}.
 \end{itemize}
 
 \subsection{Navegación Condicionada al Perfil del Usuario}
-El modelo de navegación de la interfaz emplea un enrutamiento condicionado al perfil y los roles del usuario autenticado. El componente \texttt{NavMenu.razor} ajusta dinámicamente los enlaces visibles utilizando el componente \texttt{AuthorizeView} de Blazor, que evalúa en tiempo real las declaraciones (\textit{claims}) del token JWT. Las operaciones administrativas críticas ---como la gestión de usuarios, la asignación de roles o la revisión de registros pendientes--- se renderizan exclusivamente si el motor de autorización corrobora un rol de nivel Administrador, mientras que los módulos de análisis estadístico y la galería quedan disponibles para los investigadores autorizados de la red. Este comportamiento materializa el principio de \textbf{mínimo privilegio}, garantizando que cada usuario visualice únicamente las funcionalidades correspondientes a su nivel de autorización.
+El modelo de navegación de la interfaz emplea un enrutamiento condicionado al perfil y los roles del usuario 
+autenticado. El componente \texttt{NavMenu.razor} ajusta dinámicamente los enlaces visibles utilizando el 
+componente \texttt{AuthorizeView} de Blazor, que evalúa en tiempo real las declaraciones (\textit{claims}) 
+del token JWT. Las operaciones administrativas críticas ---como la gestión de usuarios, la asignación de 
+roles o la revisión de registros pendientes--- se renderizan exclusivamente si el motor de autorización 
+corrobora un rol de nivel Administrador, mientras que los módulos de análisis estadístico y la galería 
+quedan disponibles para los investigadores autorizados de la red. Este comportamiento materializa el 
+principio de \textbf{mínimo privilegio}, garantizando que cada usuario visualice únicamente las 
+funcionalidades correspondientes a su nivel de autorización.
 
 Los módulos funcionales del \textit{frontend} se organizan de la siguiente manera:
 
@@ -168,6 +351,8 @@ Galería de Imágenes & \texttt{/images} & Exploración multi-facetada con despl
 \hline
 Autenticación & \texttt{/account/login} & Inicio de sesión local y mediante Google Sign-In. \\
 \hline
+Registro de Usuarios & \texttt{/account/register} & Registro de nuevos usuarios. \\
+\hline
 Perfil de Usuario & \texttt{/account/profile} & Gestión de datos personales y estado de autorización. \\
 \hline
 Administración & \texttt{/users} & Panel de gestión de usuarios y roles (exclusivo para Administradores). \\
@@ -181,61 +366,128 @@ Portal de Desarrolladores & \texttt{/developers} & Guía de integración con la 
 \end{longtable}
 
 \section{Persistencia de Datos y Mapeo Objeto-Relacional}
-DermaUH utiliza \textit{Entity Framework Core 9} como herramienta de mapeo objeto-relacional (ORM), conectado al motor de persistencia PostgreSQL 17~\cite{postgresql_docs}. PostgreSQL fue seleccionado por su robustez en entornos de producción, su cumplimiento estricto de las propiedades ACID (Atomicidad, Consistencia, Aislamiento, Durabilidad), su soporte nativo para tipos de datos avanzados y su naturaleza de código abierto, requisito mandatorio para la soberanía tecnológica en los servidores institucionales cubanos.
+DermaUH Images utiliza \textit{Entity Framework Core 9} como herramienta de mapeo objeto-relacional (ORM), 
+conectado al motor de persistencia PostgreSQL 17~\cite{postgresql_docs}. PostgreSQL fue seleccionado por 
+su robustez en entornos de producción, su cumplimiento estricto de las propiedades ACID (Atomicidad, 
+Consistencia, Aislamiento, Durabilidad), su soporte nativo para tipos de datos avanzados y su naturaleza 
+de código abierto, requisito mandatorio para la soberanía tecnológica en los servidores institucionales 
+cubanos.
 
-El \texttt{DermaImageDbContext}, clase central de la capa de persistencia, hereda de \texttt{IdentityDbContext<User, IdentityRole<Guid>, Guid>}, integrando de forma transparente las tablas del sistema de identidad de ASP.NET Core con las tablas de dominio clínico del sistema. Las tablas de Identity se renombran mediante la API fluida (\textit{Fluent API})~\cite{ef_core_fluent_api} a denominaciones más concisas y legibles (\texttt{Users}, \texttt{Roles}, \texttt{UserRoles}, \texttt{UserClaims}, \texttt{UserLogins}), mientras que se añaden las tablas de dominio: \texttt{Images} (para la entidad \texttt{DermaImg}) y \texttt{DownloadRequests}.
+El \texttt{DermaImageDbContext}, clase central de la capa de persistencia, hereda de 
+\texttt{IdentityDbContext<User, IdentityRole<Guid>, Guid>}, integrando de forma transparente las tablas 
+del sistema de identidad de ASP.NET Core con las tablas de dominio clínico del sistema. Las tablas de 
+Identity se renombran mediante la API fluida (\textit{Fluent API})~\cite{ef_core_fluent_api} a denominaciones 
+más concisas y legibles (\texttt{Users}, \texttt{Roles}, \texttt{UserRoles}, \texttt{UserClaims}, 
+\texttt{UserLogins}), mientras que se añaden las tablas de dominio: \texttt{Images} 
+(para la entidad \texttt{DermaImg}) y \texttt{DownloadRequests}.
 
-\subsection{Configuración de Entidades mediante API Fluida}
-Cada entidad del dominio cuenta con una clase de configuración dedicada que implementa la interfaz \texttt{IEntityTypeConfiguration<T>}~\cite{ef_core_fluent_api}. Esta separación de la configuración en clases independientes favorece la mantenibilidad y permite definir con precisión:
+\subsection{Configuración de Entidades}
+Cada entidad del dominio cuenta con una clase de configuración dedicada que implementa la interfaz 
+\texttt{IEntityTypeConfiguration<T>}~\cite{ef_core_fluent_api}. Esta separación de la configuración en 
+clases independientes favorece la mantenibilidad y permite definir con precisión:
 
 \begin{itemize}
-    \item \textbf{Restricciones de unicidad}: El campo \texttt{PublicId} se configura como único con una longitud máxima de 30 caracteres, garantizando que cada imagen posea un identificador público irrepetible.
-    \item \textbf{Conversión de enumeraciones}: Los valores de las enumeraciones del dominio (\texttt{DiagnosisCategory}, \texttt{ImageType}, etc.) se almacenan como cadenas de texto legibles (\texttt{HasConversion<string>()}), en lugar de valores enteros, lo cual maximiza la legibilidad directa de los datos en el gestor de bases de datos y facilita la depuración.
-    \item \textbf{Filtros globales de consulta}: Se activa un filtro global~\cite{ef_core_query_filters} que excluye automáticamente de todas las consultas estándar los registros marcados con \texttt{IsDeleted = true}, implementando el patrón de eliminación lógica (\textit{soft-delete}) de forma transparente.
-    \item \textbf{Comportamiento de eliminación referencial}: Las relaciones en \texttt{DownloadRequests} se configuran con \texttt{DeleteBehavior.Restrict}, previniendo eliminaciones en cascada accidentales que podrían comprometer la integridad del historial de solicitudes.
+    \item \textbf{Restricciones de unicidad}: El campo \texttt{PublicId} se configura como único con una 
+    longitud máxima de 30 caracteres, garantizando que cada imagen posea un identificador público irrepetible.
+    \item \textbf{Conversión de enumeraciones}: Los valores de las enumeraciones del dominio 
+    (\texttt{DiagnosisCategory}, \texttt{ImageType}, etc.) se almacenan como cadenas de texto 
+    legibles (\texttt{HasConversion<string>()}), en lugar de valores enteros, lo cual maximiza la 
+    legibilidad directa de los datos en el gestor de bases de datos y facilita la depuración.
+    \item \textbf{Filtros globales de consulta}: Se activa un filtro global~\cite{ef_core_query_filters} 
+    que excluye automáticamente de todas las consultas estándar los registros marcados con 
+    \texttt{IsDeleted = true}, implementando el patrón de eliminación lógica (\textit{soft-delete}) 
+    de forma transparente.
+    \item \textbf{Comportamiento de eliminación referencial}: Las relaciones en \texttt{DownloadRequests} se 
+    configuran con \texttt{DeleteBehavior.Restrict}, previniendo eliminaciones en cascada accidentales que 
+    podrían comprometer la integridad del historial de solicitudes.
 \end{itemize}
 
-\subsection{Auditoría Automática de Modificaciones}
-El método \texttt{SaveChangesAsync} del contexto de datos se sobreescribe para interceptar cada operación de persistencia y actualizar automáticamente el campo \texttt{UpdatedAt} con la marca temporal UTC actual en todas las entidades modificadas. Este mecanismo de auditoría transparente garantiza la trazabilidad temporal de cada modificación sin requerir intervención explícita del código de negocio, una propiedad esencial en el manejo de datos médicos donde la trazabilidad del historial de cambios constituye un requisito normativo.
 
 \subsection{Patrón Repositorio Genérico y Especializaciones}
-La clase \texttt{Repository<T>} implementa las operaciones CRUD genéricas definidas en la interfaz \texttt{IRepository<T>} del dominio para cualquier entidad que herede de \texttt{BaseEntity}. La operación \texttt{DeleteAsync} merece atención especial, pues en lugar de emitir un comando \texttt{DELETE} a nivel relacional, ejecuta una eliminación lógica estableciendo el campo \texttt{IsDeleted = true} y persistiendo el cambio. Combinado con el filtro global de consulta, este enfoque asegura que los registros eliminados queden excluidos de toda lectura futura sin destruir jamás la información física subyacente, una cualidad perentoria en el manejo de historiales médicos donde la destrucción de datos es inadmisible.
+La clase \texttt{Repository<T>} implementa las operaciones CRUD genéricas definidas en la interfaz 
+\texttt{IRepository<T>} del dominio para cualquier entidad que herede de \texttt{BaseEntity}. La 
+operación \texttt{DeleteAsync} merece atención especial, pues en lugar de emitir un comando 
+\texttt{DELETE} a nivel relacional, ejecuta una eliminación lógica estableciendo el campo 
+\texttt{IsDeleted = true} y persistiendo el cambio. Combinado con el filtro global de consulta, 
+este enfoque asegura que los registros eliminados queden excluidos de toda lectura futura sin 
+destruir jamás la información física subyacente, una cualidad perentoria en el manejo de historiales 
+médicos donde la destrucción de datos es inadmisible.
 
-Sobre esta base genérica se construyen repositorios especializados que extienden las capacidades para dominios específicos:
+Sobre esta base genérica se construyen repositorios especializados que extienden las capacidades para 
+dominios específicos:
 
 \begin{itemize}
-    \item \textbf{\texttt{DermaImgRepository}}: Extiende el repositorio genérico con el método \texttt{GetPagedFilteredAsync}, que recibe un objeto \texttt{DermaImgFilter} y construye dinámicamente predicados de consulta LINQ, aplicando únicamente los filtros que poseen valor. Incluye además métodos de consulta por visibilidad según el rol del usuario y agregaciones estadísticas como \texttt{GetDiagnosisCategoryCountsAsync}.
-    \item \textbf{\texttt{DownloadRequestRepository}}: Añade consultas especializadas como \texttt{GetPendingPagedAsync} ---que incluye la navegación a la entidad \texttt{User} para mostrar información del solicitante--- y \texttt{GetByUserIdAsync} para el historial personal de solicitudes.
-    \item \textbf{\texttt{UserRepository}}: No hereda del repositorio genérico dado que la entidad \texttt{User} extiende \texttt{IdentityUser} en lugar de \texttt{BaseEntity}. Provee operaciones específicas del sistema de identidad como \texttt{ConfirmEmailAsync}, \texttt{ResetPasswordAsync} y \texttt{GetRolesAsync}.
+    \item \textbf{\texttt{DermaImgRepository}}: Extiende el repositorio genérico con el método 
+    \texttt{GetPagedFilteredAsync}, que recibe un objeto \texttt{DermaImgFilter} y construye 
+    dinámicamente predicados de consulta LINQ, aplicando únicamente los filtros que poseen valor. 
+    Incluye además métodos de consulta por visibilidad según el rol del usuario y agregaciones 
+    estadísticas como \texttt{GetDiagnosisCategoryCountsAsync}.
+    \item \textbf{\texttt{DownloadRequestRepository}}: Añade consultas especializadas como 
+    \texttt{GetPendingPagedAsync} ---que incluye la navegación a la entidad \texttt{User} 
+    para mostrar información del solicitante--- y \texttt{GetByUserIdAsync} para el historial 
+    personal de solicitudes.
+    \item \textbf{\texttt{UserRepository}}: No hereda del repositorio genérico dado que la entidad 
+    \texttt{User} extiende \texttt{IdentityUser} en lugar de \texttt{BaseEntity}. Provee operaciones 
+    específicas del sistema de identidad como \texttt{ConfirmEmailAsync}, \texttt{ResetPasswordAsync} 
+    y \texttt{GetRolesAsync}.
 \end{itemize}
 
-\subsection{Migraciones de Esquema}
-Las migraciones de Entity Framework Core gestionan la evolución del esquema relacional de forma versionada y reproducible~\cite{ef_core_migrations}. Cada migración captura los cambios incrementales del modelo de datos y genera las sentencias DDL correspondientes para PostgreSQL. Un ejemplo ilustrativo de esta evolución es la migración \texttt{RemovePatientInfoAndAddProvincia}, que eliminó campos de información personal identificable (\texttt{PatientName}, \texttt{ClinicalHistoryNumber}) y los sustituyó por el campo anonimizado \texttt{Provincia}, demostrando el compromiso del sistema con la privacidad de los datos del paciente y la evolución controlada del esquema hacia un modelo de anonimización progresiva.
+
 \section{Autenticación y Autorización de Acceso}
-La plataforma protege de extremo a extremo la identidad y la veracidad de las comunicaciones empleando una estrategia de seguridad multicapa que combina estándares criptográficos reconocidos internacionalmente con políticas de control de acceso granular.
+La plataforma protege de extremo a extremo la identidad y la veracidad de las comunicaciones empleando una 
+estrategia de seguridad multicapa que combina estándares criptográficos reconocidos internacionalmente con 
+políticas de control de acceso granular.
 
 \subsection{JSON Web Tokens (JWT)}
-El mecanismo central de autenticación se fundamenta en el estándar JSON Web Token (JWT), definido formalmente en el RFC~7519~\cite{rfc7519_jwt}. Un JWT es un token compacto, autocontenido y seguro para URLs que codifica declaraciones (\textit{claims}) sobre la identidad y los permisos del usuario. Su estructura tripartita ---cabecera (\textit{header}), carga útil (\textit{payload}) y firma (\textit{signature})--- permite al servidor verificar la autenticidad e integridad del token sin necesidad de consultar la base de datos en cada petición, lo cual reduce significativamente la carga sobre el motor de persistencia en escenarios de alta concurrencia.
+El mecanismo central de autenticación se fundamenta en el estándar JSON Web Token (JWT)~\cite{rfc7519_jwt}. 
+Un JWT es un token compacto, autocontenido y seguro para URLs que 
+codifica declaraciones (\textit{claims}) sobre la identidad y los permisos del usuario. Su estructura 
+tripartita ---cabecera (\textit{header}), carga útil (\textit{payload}) y firma (\textit{signature})--- 
+permite al servidor verificar la autenticidad e integridad del token sin necesidad de consultar la base 
+de datos en cada petición, lo cual reduce significativamente la carga sobre el motor de persistencia en 
+escenarios de alta concurrencia.
 
-El servicio \texttt{JwtService} de DermaUH genera tokens que incorporan las siguientes declaraciones: el identificador único del usuario (\texttt{sub}), la dirección de correo electrónico (\texttt{email}), el nombre completo (\texttt{name}) y los roles asignados (\texttt{role}). La firma se produce mediante el algoritmo \textbf{HMAC-SHA256}~\cite{rfc2104_hmac}, que garantiza la integridad del token utilizando una clave simétrica secreta compartida exclusivamente por los componentes del servidor. El tiempo de expiración se configura en 1440 minutos (24 horas) por defecto, equilibrando la comodidad del usuario con la ventana de exposición en caso de compromiso del token.
+El servicio \texttt{JwtService} de DermaUH Images genera tokens que incorporan las siguientes 
+declaraciones: el identificador único del usuario (\texttt{sub}), la dirección de correo 
+electrónico (\texttt{email}), el nombre completo (\texttt{name}) y los roles asignados (\texttt{role}). 
+La firma se produce mediante el algoritmo \textbf{HMAC-SHA256}~\cite{rfc2104_hmac}, que garantiza la 
+integridad del token utilizando una clave simétrica secreta compartida exclusivamente por los componentes 
+del servidor. El tiempo de expiración se configura en 1440 minutos (24 horas) por defecto, equilibrando 
+la comodidad del usuario con la ventana de exposición en caso de compromiso del token.
 
-La validación de los tokens entrantes se configura en la capa de infraestructura con parámetros estrictos: se verifican el emisor (\texttt{ValidateIssuer}), la audiencia (\texttt{ValidateAudience}), la firma criptográfica (\texttt{ValidateIssuerSigningKey}) y el tiempo de vida (\texttt{ValidateLifetime}), rechazando cualquier token que no satisfaga la totalidad de estos criterios.
+La validación de los tokens entrantes se configura en la capa de infraestructura con parámetros estrictos: 
+se verifican el emisor (\texttt{ValidateIssuer}), la audiencia (\texttt{ValidateAudience}), la firma 
+criptográfica (\texttt{ValidateIssuerSigningKey}) y el tiempo de vida (\texttt{ValidateLifetime}), 
+rechazando cualquier token que no satisfaga la totalidad de estos criterios.
 
 \subsection{Autenticación Delegada mediante Google OAuth 2.0}
-Con el fin de flexibilizar la incorporación de nuevos profesionales y colaboradores internacionales al ecosistema, se integra el marco de autorización \textit{OAuth 2.0}~\cite{rfc6749_oauth} para delegar la verificación de identidad a los proveedores de Google~\cite{google_identity_docs}. El flujo implementado sigue un esquema denominado ``pasivo'':
+Con el fin de flexibilizar la incorporación de nuevos profesionales y colaboradores internacionales al 
+ecosistema, se integra el marco de autorización \textit{OAuth 2.0}~\cite{rfc6749_oauth} para delegar 
+la verificación de identidad a los proveedores de Google~\cite{google_identity_docs}. El flujo implementado 
+sigue un esquema denominado ``pasivo'':
 
 \begin{enumerate}
-    \item El \textit{frontend} obtiene un token de identidad (\texttt{IdToken}) del servicio de identidad de Google mediante la biblioteca GSI Client.
+    \item El \textit{frontend} obtiene un token de identidad (\texttt{IdToken}) del servicio de identidad de 
+    Google mediante la biblioteca GSI Client.
     \item El token se transmite al terminal \texttt{POST /api/auth/google} de la API.
-    \item El \texttt{AuthManager} valida criptográficamente el token utilizando \texttt{GoogleJsonWebSignature.ValidateAsync}, verificando su firma, emisor y audiencia.
-    \item Si el usuario no existe en el sistema, se crea automáticamente un perfil con correo electrónico confirmado (\texttt{EmailConfirmed = true}), cuenta inactiva (\texttt{IsActive = false}) y rol de Visitante (\texttt{Viewer}).
-    \item Se notifica a todos los administradores activos por correo electrónico sobre el nuevo registro pendiente de aprobación.
+    \item El \texttt{AuthManager} valida criptográficamente el token utilizando 
+    \texttt{GoogleJsonWebSignature.ValidateAsync}, verificando su firma, emisor y audiencia.
+    \item Si el usuario no existe en el sistema, se crea automáticamente un perfil con correo electrónico 
+    confirmado (\texttt{EmailConfirmed = true}), cuenta inactiva (\texttt{IsActive = false}) y rol de 
+    Visitante (\texttt{Viewer}).
+    \item Se notifica a todos los administradores activos por correo electrónico sobre el nuevo registro 
+    pendiente de aprobación.
 \end{enumerate}
 
-Este flujo garantiza que la incorporación de nuevos usuarios sea fluida ---aprovechando la infraestructura de autenticación de Google--- sin sacrificar el control institucional sobre quién accede al repositorio de datos clínicos, ya que toda cuenta creada por esta vía requiere activación administrativa explícita.
+Este flujo garantiza que la incorporación de nuevos usuarios sea fluida ---aprovechando la infraestructura 
+de autenticación de Google--- sin sacrificar el control institucional sobre quién accede al 
+repositorio de datos clínicos, ya que toda cuenta creada por esta vía requiere activación administrativa 
+explícita.
 
 \subsection{Control de Acceso Basado en Roles (RBAC)}
-El sistema implementa un modelo de control de acceso basado en roles (RBAC, \textit{Role-Based Access Control})~\cite{nist_rbac}, estratificado en cuatro perfiles operativos con permisos diferenciados:
+El sistema implementa un modelo de control de acceso basado en roles 
+(RBAC, \textit{Role-Based Access Control})~\cite{nist_rbac}, estratificado en cuatro perfiles operativos 
+con permisos diferenciados:
 
 \begin{longtable}{|p{3cm}|p{11.5cm}|}
 \hline
@@ -246,34 +498,52 @@ El sistema implementa un modelo de control de acceso basado en roles (RBAC, \tex
 \textbf{Rol} & \textbf{Permisos} \\
 \hline
 \endhead
-\texttt{Admin} & Gestión completa del ecosistema: administración de usuarios y roles, revisión y aprobación de imágenes, autorización de solicitudes de descarga masiva, acceso a estadísticas extendidas que incluyen registros privados. \\
+\texttt{Admin} & Gestión completa del ecosistema: administración de usuarios y roles, autorización de 
+solicitudes de descarga masiva, acceso a estadísticas extendidas que incluyen registros privados. \\
 \hline
-\texttt{Reviewer} & Auditoría del repositorio: capacidad para revisar, aprobar o rechazar imágenes en el flujo de revisión de calidad. \\
+\texttt{Contributor} & Contribución de contenido: carga de imágenes dermatológicas con metadatos clínicos. \\
 \hline
-\texttt{Contributor} & Contribución de contenido: carga de imágenes dermatológicas con metadatos clínicos y gestión de sus propias contribuciones. \\
-\hline
-\texttt{Viewer} & Consulta de recursos públicos: acceso a imágenes aprobadas, cuadro de mando estadístico y diccionario de metadatos. \\
+\texttt{Viewer} & Consulta de recursos públicos: acceso a imágenes aprobadas, cuadro de mando estadístico 
+y diccionario de metadatos. \\
 \hline
 \end{longtable}
 
-Los roles se siembran en la base de datos durante la inicialización del sistema con identificadores GUID deterministas, previniendo la generación de migraciones espurias y garantizando la idempotencia del proceso de despliegue.
+Los roles se siembran en la base de datos durante la inicialización del sistema con identificadores GUID 
+deterministas, previniendo la generación de migraciones espurias y garantizando la idempotencia del 
+proceso de despliegue.
 
 \section{Ciclo de Vida de la Imagen Dermatológica}
-La ingesta al sistema de una nueva fotografía clínica compone un canal secuencial riguroso de transformaciones, validaciones algorítmicas y garantías de integridad que aseguran la calidad y consistencia de cada registro incorporado al repositorio.
+La ingesta al sistema de una nueva fotografía clínica compone un canal secuencial riguroso de 
+transformaciones, validaciones algorítmicas y garantías de integridad que aseguran la calidad y 
+consistencia de cada registro incorporado al repositorio.
 
 \subsection{Canal de Ingesta (\textit{Pipeline} de Subida)}
-Al recibir una petición \texttt{POST /api/images} con contenido segmentado (\textit{multipart/form-data}), el sistema ejecuta las siguientes etapas en orden estricto:
+Al recibir una petición \texttt{POST /api/images} con contenido segmentado (\textit{multipart/form-data}), 
+el sistema ejecuta las siguientes etapas en orden estricto:
 
 \begin{enumerate}
-    \item \textbf{Almacenamiento físico}: El \texttt{ImageUploadManager} extrae el archivo del contexto HTTP y lo persiste en el directorio raíz configurado del servidor. Para prevenir la sobreescritura de archivos con nombres idénticos, se aplica un algoritmo de desambiguación que concatena una marca temporal UTC al nombre original del archivo, garantizando la unicidad del nombre sin alterar la extensión ni el contenido binario.
-    \item \textbf{Validación clínica}: El componente \texttt{ImageCreateValidationRules} ejecuta un árbol de reglas condicionales estandarizadas que garantizan la coherencia médica de los metadatos (detallado en la Sección~\ref{sec:validacion_clinica}).
-    \item \textbf{Generación de identificador público}: Se asigna automáticamente un \texttt{PublicId} con formato \texttt{DERM\_0000001}, un identificador secuencial, legible y estable, diseñado para ser utilizado en referencias cruzadas de publicaciones científicas sin exponer los identificadores universales (UUID) internos de la base de datos.
-    \item \textbf{Persistencia atómica}: El \texttt{DermaImgManager} crea la entidad y la persiste en la base de datos mediante una transacción atómica que garantiza la consistencia entre el archivo físico y el registro relacional.
-    \item \textbf{Respuesta}: Se retorna una representación completa del registro creado (\texttt{201 Created}).
+    \item \textbf{Almacenamiento físico}: El \texttt{ImageUploadManager} extrae el archivo del contexto 
+    HTTP y lo persiste en el directorio raíz configurado del servidor. Para prevenir la sobreescritura de 
+    archivos con nombres idénticos, se aplica un algoritmo de desambiguación que concatena una marca 
+    temporal UTC al nombre original del archivo, garantizando la unicidad del nombre sin alterar la 
+    extensión ni el contenido binario.
+    \item \textbf{Validación clínica}: El componente \texttt{ImageCreateValidationRules} ejecuta un árbol 
+    de reglas condicionales estandarizadas que garantizan la coherencia médica de los metadatos 
+    (detallado en la Sección~\ref{sec:validacion_clinica}).
+    \item \textbf{Generación de identificador público}: Se asigna automáticamente un \texttt{PublicId} 
+    con formato \texttt{DERM\_0000001}, un identificador secuencial, legible y estable, diseñado para 
+    ser utilizado en referencias cruzadas de publicaciones científicas sin exponer los identificadores 
+    universales (UUID) internos de la base de datos.
+    \item \textbf{Persistencia atómica}: El \texttt{DermaImgManager} crea la entidad y la persiste en la 
+    base de datos mediante una transacción atómica que garantiza la consistencia entre el archivo físico 
+    y el registro relacional.
+    \item \textbf{Respuesta}: Se retorna una representación completa del registro creado 
+    (\texttt{201 Created}).
 \end{enumerate}
 
 \subsection{Validación Clínica con Reglas Condicionales}\label{sec:validacion_clinica}
-El sistema aplica reglas de validación clínica que trascienden las restricciones simples de campos obligatorios, implementando un árbol de decisión médica que garantiza la coherencia interna de cada registro:
+El sistema aplica reglas de validación clínica que trascienden las restricciones simples de campos 
+obligatorios, implementando un árbol de decisión médica que garantiza la coherencia interna de cada registro:
 
 \begin{longtable}{|p{7cm}|p{7.5cm}|}
 \hline
@@ -284,47 +554,87 @@ El sistema aplica reglas de validación clínica que trascienden las restriccion
 \textbf{Regla} & \textbf{Justificación Clínica} \\
 \hline
 \endhead
-\texttt{InjuryType} solo es válido si \texttt{DiagnosisCategory} es \textit{Malignant} & El tipo de lesión maligna (melanoma, carcinoma basocelular, etc.) carece de sentido para lesiones benignas o indeterminadas. \\
+\texttt{InjuryType} solo es válido si \texttt{DiagnosisCategory} es \textit{Malignant} & El tipo de 
+lesión maligna (melanoma, carcinoma basocelular, etc.) carece de sentido para lesiones benignas o 
+indeterminadas. \\
 \hline
-\texttt{DermoscopicType} solo se acepta si \texttt{ImageType} es \textit{Dermoscopic} & La modalidad dermoscópica (contacto, polarizada, etc.) solo aplica a imágenes capturadas con dermatoscopio. \\
+\texttt{DermoscopicType} solo se acepta si \texttt{ImageType} es \textit{Dermoscopic} & La modalidad 
+dermoscópica (contacto, polarizada, etc.) solo aplica a imágenes capturadas con dermatoscopio. \\
 \hline
-Campos histológicos (\texttt{MelThickMm}, \texttt{MelMitoticIndex}, \texttt{MelUlcer}) solo si \texttt{InjuryType} es \textit{Melanoma} & La profundidad de Breslow, el índice mitótico y la ulceración son indicadores exclusivos del melanoma, clínicamente incoherentes para otros cuadros de etiología no melanocítica. \\
+Campos histológicos (\texttt{MelThickMm}, \texttt{MelMitoticIndex}, \texttt{MelUlcer}) solo si 
+\texttt{InjuryType} es \textit{Melanoma} & La profundidad de Breslow, el índice mitótico y la 
+ulceración son indicadores exclusivos del melanoma, clínicamente incoherentes para otros cuadros 
+de etiología no melanocítica. \\
 \hline
-Edad, sexo, sitio anatómico, diagnóstico y exposición solar son obligatorios & Constituyen el conjunto mínimo de datos demográficos y clínicos requeridos para que el registro posea valor para la investigación epidemiológica. \\
+Edad, sexo, sitio anatómico, diagnóstico y exposición solar son obligatorios & Constituyen el conjunto 
+mínimo de datos demográficos y clínicos requeridos para que el registro posea valor para la investigación 
+epidemiológica. \\
 \hline
 \end{longtable}
 
-Estas validaciones automatizadas previenen la persistencia de registros inconsistentes, elevando la calidad del \textit{corpus} de datos para su eventual uso en el entrenamiento de modelos de inteligencia artificial, tal como fue argumentado en la Sección de Valoración del Capítulo~\ref{ch:proposal}.
+Estas validaciones automatizadas previenen la persistencia de registros inconsistentes, elevando la 
+calidad del \textit{corpus} de datos para su eventual uso en el entrenamiento de modelos de inteligencia 
+artificial, tal como fue argumentado en la Sección de Valoración del Capítulo~\ref{ch:proposal}.
 
 \subsection{Control de Visibilidad y Acceso a Imágenes}
-El acceso a las imágenes se controla a nivel del repositorio de datos mediante una lógica de autorización contextual implementada en el \texttt{ImagesController}:
+El acceso a las imágenes se controla a nivel del repositorio de datos mediante una lógica de autorización 
+contextual implementada en el \texttt{ImagesController}:
 
 \begin{itemize}
-    \item \textbf{Usuarios anónimos}: Acceden exclusivamente a imágenes con \texttt{IsPublic = true}.
-    \item \textbf{Contribuidores autenticados}: Visualizan adicionalmente sus propias imágenes privadas mediante \texttt{GetByContributorIdAsync}.
-    \item \textbf{Administradores y Revisores}: Disponen de acceso completo al repositorio para la gestión y auditoría de calidad.
-    \item \textbf{Filtro de eliminación lógica}: El filtro global excluye de forma transparente todos los registros con \texttt{IsDeleted = true}, independientemente del rol del solicitante.
+    \item \textbf{Usuarios anónimos}: Acceden a un conjunto reducido de imágenes públicas.
+    \item \textbf{Autenticados}: Acceden a las imágenes públicas.
+    \item \textbf{Administradores}: Disponen de acceso completo al repositorio para la gestión y auditoría de calidad.
 \end{itemize}
 
 \subsection{Descarga Masiva Autorizada}
-Para las descargas masivas de conjuntos de imágenes con sus metadatos, el sistema implementa un flujo de autorización explícita que consta de cuatro etapas: (1) el usuario envía una solicitud (\texttt{DownloadRequest}) con justificación e institución; (2) un Administrador revisa y aprueba o rechaza la solicitud; (3) al aprobar, se activa el indicador \texttt{IsDownloadAuthorized} en la entidad \texttt{User}; (4) el usuario autorizado accede al terminal \texttt{POST /api/images/download}, que genera dinámicamente un archivo ZIP en memoria conteniendo los archivos de imagen y un archivo CSV con todos los metadatos clínicos normalizados, preparado para su consumo directo en ecosistemas de análisis de datos como Python o R.
+Para las descargas masivas de conjuntos de imágenes con sus metadatos, el sistema implementa un flujo 
+de autorización explícita que consta de cuatro etapas: (1) el usuario envía una solicitud 
+(\texttt{DownloadRequest}) con justificación e institución; (2) un Administrador revisa y aprueba o 
+rechaza la solicitud; (3) al aprobar, se activa el indicador \texttt{IsDownloadAuthorized} en la 
+entidad \texttt{User}; (4) el usuario autorizado accede al terminal \texttt{POST /api/images/download}, 
+que genera dinámicamente un archivo ZIP en memoria conteniendo los archivos de imagen y un archivo CSV 
+con todos los metadatos clínicos normalizados.
+
 \section{Sistema de Estilos y Componentes Visuales}
-La coherencia gráfica visual, así como la capacidad responsiva de adaptarse fluidamente entre entornos de escritorio y resoluciones de dispositivos móviles, se sostiene íntegramente gracias al \textit{framework} \textit{Tailwind CSS}~\cite{tailwindcss_docs}. Su arquitectura orientada a la utilidad (\textit{utility-first}) inyecta de forma granular clases de bajo nivel directamente en el marcado HTML (\texttt{flex}, \texttt{p-4}, \texttt{text-lg}, entre otros), promoviendo una composición de estilos sin sobrecargas de abstracción. El proceso de compilación elimina automáticamente las clases no utilizadas (\textit{tree-shaking}), generando hojas de estilo en cascada de peso trivial, optimizadas para la distribución en producción. El canal de compilación (\textit{build pipeline}) de Tailwind se integra en el proceso de compilación de .NET, garantizando que los estilos se regeneren automáticamente con cada compilación del proyecto.
+La coherencia gráfica visual, así como la capacidad responsiva de adaptarse fluidamente entre entornos 
+de escritorio y resoluciones de dispositivos móviles, se sostiene íntegramente gracias al 
+\textit{framework} \textit{Tailwind CSS}~\cite{tailwindcss_docs}. Su arquitectura orientada a la 
+utilidad (\textit{utility-first}) inyecta de forma granular clases de bajo nivel directamente en el 
+marcado HTML (\texttt{flex}, \texttt{p-4}, \texttt{text-lg}, entre otros), promoviendo una composición 
+de estilos sin sobrecargas de abstracción. El proceso de compilación elimina automáticamente las clases 
+no utilizadas (\textit{tree-shaking}), generando hojas de estilo en cascada de peso trivial, optimizadas 
+para la distribución en producción. El canal de compilación (\textit{build pipeline}) de Tailwind se 
+integra en el proceso de compilación de .NET, garantizando que los estilos se regeneren automáticamente 
+con cada compilación del proyecto.
 
 \subsection{Tokens de Diseño y Paleta Visual}
-La plataforma define una identidad visual uniforme y coherente mediante la parametrización de \textit{tokens} de diseño en el archivo \texttt{tailwind.config.js}. La paleta personalizada \texttt{brand} y \texttt{rosebrand} delimita tonos de fucsia y rosa seleccionados para conciliar visualmente con el contexto de una plataforma médica de imágenes dermatológicas, transmitiendo profesionalismo sin la austeridad excesiva de las interfaces clínicas tradicionales. Las fuentes tipográficas elegidas son \textbf{Manrope} (familia \textit{sans-serif} principal) y \textbf{Sora} (familia \textit{display}), ambas provistas por el servicio Google Fonts, seleccionadas por su legibilidad en pantalla y su carácter moderno.
+La plataforma define una identidad visual uniforme y coherente mediante la parametrización 
+de \textit{tokens} de diseño en el archivo \texttt{tailwind.config.js}. La paleta personalizada 
+\texttt{brand} y \texttt{rosebrand} delimita tonos de fucsia y rosa seleccionados para conciliar 
+visualmente con el contexto del ecosistema DermaUH. Las fuentes 
+tipográficas elegidas son \textbf{Manrope} (familia \textit{sans-serif} principal) y \textbf{Sora} 
+(familia \textit{display}), ambas provistas por el servicio Google Fonts, seleccionadas por su 
+legibilidad en pantalla y su carácter moderno.
 
 \subsection{Componentes Blazor Reutilizables}
-La interfaz se construye a partir de componentes Razor reutilizables que encapsulan patrones visuales recurrentes:
+La interfaz se construye a partir de componentes Razor reutilizables que encapsulan patrones visuales 
+recurrentes:
 
 \begin{itemize}
-    \item \textbf{\texttt{PageHeader.razor}}: Estandariza la presentación del título y subtítulo de cada página, garantizando consistencia tipográfica y espacial.
-    \item \textbf{\texttt{SectionCard.razor}}: Contenedor con efecto de transparencia vítrea (\textit{glassmorphism}), implementado mediante la propiedad CSS \texttt{backdrop-filter: blur(4px)}, que aporta profundidad visual y modernidad a la interfaz.
-    \item \textbf{\texttt{ImagePreview.razor}}: Realiza la carga asíncrona de imágenes dermatológicas, convirtiéndolas a \textit{data URLs} codificadas en Base64 para su renderizado eficiente en el navegador sin peticiones HTTP adicionales.
+    \item \textbf{\texttt{PageHeader.razor}}: Estandariza la presentación del título y subtítulo de cada 
+    página, garantizando consistencia tipográfica y espacial.
+    \item \textbf{\texttt{SectionCard.razor}}: Contenedor con efecto de transparencia vítrea 
+    (\textit{glassmorphism}), implementado mediante la propiedad CSS \texttt{backdrop-filter: blur(4px)}, 
+    que aporta profundidad visual y modernidad a la interfaz.
+    \item \textbf{\texttt{ImagePreview.razor}}: Realiza la carga asíncrona de imágenes dermatológicas, 
+    convirtiéndolas a \textit{data URLs} codificadas en Base64 para su renderizado eficiente en el navegador 
+    sin peticiones HTTP adicionales.
 \end{itemize}
 
 \section{Inventario Tecnológico}
-Para ofrecer una visión consolidada del ecosistema tecnológico que sustenta la implementación de DermaUH, se presenta a continuación el inventario detallado de lenguajes, marcos de trabajo, bibliotecas y herramientas empleados.
+Para ofrecer una visión consolidada del ecosistema tecnológico que sustenta la implementación de 
+DermaUH Images, se presenta a continuación el inventario detallado de lenguajes, marcos de trabajo, 
+bibliotecas y herramientas empleados.
 
 \subsection{Lenguajes de Programación}
 \begin{longtable}{|p{3.5cm}|p{11cm}|}
@@ -336,11 +646,14 @@ Para ofrecer una visión consolidada del ecosistema tecnológico que sustenta la
 \textbf{Lenguaje} & \textbf{Uso en el Proyecto} \\
 \hline
 \endhead
-\textbf{C\# 13}~\cite{csharp_13_docs} & Lenguaje principal para el \textit{backend} completo (API, dominio, infraestructura) y los componentes de \textit{frontend} Blazor. \\
+\textbf{C\# 13}~\cite{csharp_13_docs} & Lenguaje principal para el \textit{backend} 
+completo (API, dominio, infraestructura) y los componentes de \textit{frontend} Blazor. \\
 \hline
-\textbf{Razor (.razor)} & Sintaxis de plantillas para los componentes de interfaz de usuario de Blazor, que combina marcado HTML con lógica C\#. \\
+\textbf{Razor (.razor)} & Sintaxis de plantillas para los componentes de interfaz de usuario de Blazor, 
+que combina marcado HTML con lógica C\#. \\
 \hline
-\textbf{JavaScript (ES6+)} & Interoperabilidad con APIs nativas del navegador: desplazamiento infinito, gestión local de sesiones y carrusel de instituciones. \\
+\textbf{JavaScript (ES6+)} & Interoperabilidad con APIs nativas del navegador: desplazamiento infinito, 
+gestión local de sesiones y carrusel de instituciones. \\
 \hline
 \textbf{CSS / PostCSS} & Estilos visuales procesados mediante el canal de Tailwind CSS. \\
 \hline
@@ -358,13 +671,16 @@ Para ofrecer una visión consolidada del ecosistema tecnológico que sustenta la
 \textbf{Marco de Trabajo} & \textbf{Versión} & \textbf{Rol en el Sistema} \\
 \hline
 \endhead
-\textbf{.NET}~\cite{aspnet_core_docs} & 10.0 & Plataforma base multiplataforma para \textit{backend} y \textit{frontend}. \\
+\textbf{.NET}~\cite{aspnet_core_docs} & 10.0 & Plataforma base multiplataforma para \textit{backend} 
+y \textit{frontend}. \\
 \hline
 \textbf{ASP.NET Core} & 10.0 & Marco de trabajo web para la API REST. \\
 \hline
-\textbf{Blazor Server}~\cite{blazor_docs} & 10.0 & Marco de trabajo de interfaz de usuario con renderizado en servidor. \\
+\textbf{Blazor Server}~\cite{blazor_docs} & 10.0 & Marco de trabajo de interfaz de usuario con 
+renderizado en servidor. \\
 \hline
-\textbf{ASP.NET Core Identity}~\cite{aspnet_identity} & 9.0.2 & Subsistema de gestión de usuarios, roles y autenticación. \\
+\textbf{ASP.NET Core Identity}~\cite{aspnet_identity} & 9.0.2 & Subsistema de gestión de usuarios, 
+roles y autenticación. \\
 \hline
 \textbf{Entity Framework Core}~\cite{ef_core_docs} & 9.0.2 & ORM para el acceso y mapeo de datos relacionales. \\
 \hline
@@ -373,7 +689,7 @@ Para ofrecer una visión consolidada del ecosistema tecnológico que sustenta la
 \end{longtable}
 
 \subsection{Bibliotecas Principales del Backend}
-\begin{longtable}{|p{5cm}|p{1.5cm}|p{8cm}|}
+\begin{longtable}{|p{6cm}|p{1.5cm}|p{8cm}|}
 \hline
 \textbf{Paquete NuGet} & \textbf{Versión} & \textbf{Función} \\
 \hline
@@ -382,9 +698,11 @@ Para ofrecer una visión consolidada del ecosistema tecnológico que sustenta la
 \textbf{Paquete NuGet} & \textbf{Versión} & \textbf{Función} \\
 \hline
 \endhead
-\texttt{Npgsql.EntityFramework-Core.PostgreSQL}~\cite{npgsql_docs} & 9.0.4 & Proveedor de EF Core para PostgreSQL. \\
+\texttt{Npgsql.EntityFramework-Core.PostgreSQL}~\cite{npgsql_docs} & 9.0.4 & Proveedor de EF Core para 
+PostgreSQL. \\
 \hline
-\texttt{Microsoft.AspNetCore.Authentication.JwtBearer} & 9.0.12 & Validación de tokens JWT en el canal de \textit{middleware}. \\
+\texttt{Paquete AspNetCore.Authentication.JwtBearer} & 9.0.12 & Validación de tokens JWT en el 
+canal de \textit{middleware}. \\
 \hline
 \texttt{Google.Apis.Auth} & 1.68.0 & Validación criptográfica de tokens de identidad de Google. \\
 \hline
@@ -392,48 +710,36 @@ Para ofrecer una visión consolidada del ecosistema tecnológico que sustenta la
 \hline
 \texttt{Swashbuckle.AspNetCore}~\cite{swagger_docs} & 6.4.0 & Generación de documentación Swagger/OpenAPI. \\
 \hline
-\texttt{Microsoft.IdentityModel.Tokens} & 8.4.0 & Primitivas criptográficas para la generación y validación de JWT. \\
+\texttt{Paquete Microsoft.IdentityModel.Tokens} & 8.4.0 & Primitivas criptográficas para la generación y validación de JWT. \\
 \hline
 \end{longtable}
 
-\section{Resultados Algorítmicos y Analíticos Tangibles}
-El esfuerzo ingenieril depositado en la concepción arquitectónica y la infraestructura de DermaUH se plasma en el desarrollo de algoritmos especializados que resuelven problemas concretos del dominio clínico. A continuación se detallan los resultados más significativos.
-
-\subsection{Filtrado Clínico Multi-Facetado}
-El \texttt{DermaImgRepository} implementa un algoritmo de filtrado dinámico mediante el objeto \texttt{DermaImgFilter}, que encapsula colecciones de criterios opcionales (\texttt{IReadOnlyCollection<ImageType>}, \texttt{IReadOnlyCollection<InjuryType>}, \texttt{bool? IsPublic}, entre otros). La consulta LINQ construye predicados dinámicamente utilizando composición de expresiones, aplicando exclusivamente los filtros que poseen valor. Esta técnica permite combinaciones arbitrarias de criterios sin la proliferación de métodos de consulta especializados, y la totalidad de la lógica de filtrado se traduce a una única sentencia SQL optimizada que se ejecuta íntegramente en el motor de base de datos, evitando la transferencia innecesaria de datos a la memoria del servidor.
-
-\textbf{Resultado tangible}: Un investigador puede filtrar la galería simultáneamente por tipo de imagen, categoría diagnóstica, sitio anatómico, sexo biológico y provincia de procedencia, obteniendo resultados paginados desde el servidor sin cargar la totalidad de la base de datos en memoria viva.
-
-\subsection{Generación de Identificadores Públicos Secuenciales}
-Cada imagen recibe un identificador público con formato \texttt{DERM\_0000001}. El \texttt{ImageMetadataCatalog} define la lógica de generación que garantiza unicidad, secuencialidad y legibilidad humana. La base de datos refuerza esta garantía mediante una restricción de unicidad (\texttt{UNIQUE}) y una longitud máxima de 30 caracteres sobre el campo \texttt{PublicId}.
-
-\textbf{Resultado tangible}: Los investigadores pueden referenciar imágenes específicas en publicaciones científicas con un identificador estable, conciso y legible (por ejemplo, \texttt{DERM\_0000042}), sin exponer los identificadores universales internos del sistema.
-
-\subsection{Eliminación Lógica con Filtro Global}
-La combinación del método \texttt{DeleteAsync} del repositorio genérico ---que establece \texttt{IsDeleted = true} en lugar de emitir un comando \texttt{DELETE}--- con el filtro global de consulta de Entity Framework Core~\cite{ef_core_query_filters} ---que excluye automáticamente los registros marcados--- constituye un mecanismo de eliminación lógica transparente y robusto.
-
-\textbf{Resultado tangible}: Los datos clínicos nunca se destruyen permanentemente. Un administrador puede recuperar imágenes ``eliminadas'' si fuese necesario, y el historial completo de contribuciones se mantiene íntegro para auditoría, cumpliendo con las mejores prácticas de manejo de datos médicos.
-
-\subsection{Estadísticas Agregadas en Tiempo Real}
-El terminal \texttt{GET /api/statistics/overview} calcula en tiempo real métricas agregadas del repositorio: total de imágenes, número de instituciones contribuyentes, distribución por categoría diagnóstica (benigno, indeterminado, maligno), distribución por sexo biológico y distribución por sitio anatómico. Para usuarios con rol de Administrador, las estadísticas incluyen adicionalmente los conteos de imágenes privadas pendientes de revisión.
-
-\textbf{Resultado tangible}: El cuadro de mando de analíticas muestra visualizaciones interactivas con la distribución epidemiológica del repositorio, útiles tanto para identificar sesgos en la colección de datos como para fundamentar estudios epidemiológicos de la población cubana.
-
-\subsection{Provisión Automática de Usuarios mediante Google}
-Cuando un usuario se autentica por primera vez a través de Google, el sistema ejecuta un flujo de provisión automática: valida criptográficamente el token de identidad, crea un perfil inactivo con correo confirmado y rol de Visitante, y notifica por correo electrónico a todos los administradores activos. La cuenta permanece inaccesible hasta la activación administrativa explícita.
-
-\textbf{Resultado tangible}: El sistema soporta la incorporación fluida de nuevos investigadores internacionales mediante su cuenta institucional de Google, sin requerir registro manual, manteniendo simultáneamente un control administrativo riguroso sobre quién accede al repositorio de datos clínicos.
-
 \section{Conclusiones del Capítulo}
-La materialización tecnológica de la herramienta DermaUH Image Database a través de entornos contemporáneos como .NET~10~\cite{aspnet_core_docs}, el ecosistema Blazor~\cite{blazor_docs}, el motor relacional PostgreSQL~\cite{postgresql_docs} y la adopción rigurosa de las metodologías propuestas por la Arquitectura Limpia~\cite{martin_clean_architecture}, ha derivado en el ensamblaje de una plataforma informática de vanguardia clínica, cuyas fortalezas técnicas se sintetizan a continuación:
+La materialización tecnológica de la herramienta DermaUH Image Database a través de entornos contemporáneos 
+como .NET~10~\cite{aspnet_core_docs}, el ecosistema Blazor~\cite{blazor_docs}, el motor relacional 
+PostgreSQL~\cite{postgresql_docs} y la adopción rigurosa de las metodologías propuestas por la 
+Arquitectura Limpia~\cite{martin_clean_architecture}, ha derivado en el ensamblaje de una plataforma 
+informática de vanguardia clínica, cuyas fortalezas técnicas se sintetizan a continuación:
 
 \begin{enumerate}
-    \item \textbf{Seguridad robusta}: La política \textit{secure-by-default}~\cite{owasp_secure_default}, la autenticación mediante JWT firmados con HMAC-SHA256~\cite{rfc7519_jwt,rfc2104_hmac}, el control de acceso RBAC granular~\cite{nist_rbac} y la validación criptográfica de tokens de Google~\cite{rfc6749_oauth} conforman un perímetro de seguridad sólido y auditable.
-    \item \textbf{Integridad de datos clínicos}: Las reglas de validación condicional, que reflejan restricciones médicas reales, previenen la persistencia de registros inconsistentes y elevan la calidad del \textit{corpus} para la investigación.
-    \item \textbf{Escalabilidad del esquema}: Las migraciones versionadas de Entity Framework Core~\cite{ef_core_migrations} y el patrón de eliminación lógica permiten la evolución controlada del modelo de datos sin pérdida de información histórica.
-    \item \textbf{Experiencia de desarrollo}: La documentación interactiva Swagger UI~\cite{swagger_docs,openapi_spec}, el registro estructurado con \texttt{TraceId} y la aplicación automática de migraciones al arranque simplifican el ciclo de desarrollo y depuración.
-    \item \textbf{Privacidad del paciente}: La evolución del esquema hacia datos anonimizados ---evidenciada por la eliminación de campos de información personal identificable--- demuestra un compromiso activo con la protección de datos sensibles.
-    \item \textbf{Interoperabilidad}: La API REST documentada con OpenAPI~\cite{openapi_spec}, la exportación de metadatos en formato CSV y la descarga masiva en archivos ZIP habilitan la integración directa con ecosistemas de análisis de datos y herramientas de entrenamiento de modelos de inteligencia artificial.
+    \item \textbf{Seguridad robusta}: La política \textit{secure-by-default}~\cite{owasp_secure_default}, 
+    la autenticación mediante JWT firmados con HMAC-SHA256~\cite{rfc7519_jwt,rfc2104_hmac}, el control de 
+    acceso RBAC granular~\cite{nist_rbac} y la validación criptográfica de tokens de 
+    Google~\cite{rfc6749_oauth} conforman un perímetro de seguridad sólido y auditable.
+    \item \textbf{Integridad de datos clínicos}: Las reglas de validación condicional, que reflejan 
+    restricciones médicas reales, previenen la persistencia de registros inconsistentes y elevan la 
+    calidad del \textit{corpus} para la investigación.
+    \item \textbf{Interoperabilidad}: La API REST documentada con OpenAPI~\cite{openapi_spec}, la 
+    exportación de metadatos en formato CSV y la descarga masiva en archivos ZIP habilitan la 
+    integración directa con ecosistemas de análisis de datos y herramientas de entrenamiento de 
+    modelos de inteligencia artificial.
 \end{enumerate}
 
-El mantenimiento de una estricta separación de responsabilidades entre las cuatro capas arquitectónicas (\textit{Domain}, \textit{Application}, \textit{Infrastructure}, \textit{WebApi}), así como la política de seguridad predeterminada, la persistencia eficiente de atributos biomédicos extensos y el cuidado absoluto del ciclo de vida natural de los datos de investigación, han validado la solidez del diseño preliminar expuesto en el Capítulo~\ref{ch:proposal}. Estos resultados algorítmicos y arquitectónicos garantizan que el \textit{software} final constituya una infraestructura fundacional capaz de catalizar e incentivar directamente los futuros desarrollos de análisis médicos automatizados liderados por la Facultad de Matemática y Computación de la Universidad de La Habana.
+El mantenimiento de una estricta separación de responsabilidades entre las cuatro capas 
+arquitectónicas (\textit{Domain}, \textit{Application}, \textit{Infrastructure}, \textit{WebApi}), 
+así como la política de seguridad predeterminada, la persistencia eficiente de atributos biomédicos 
+extensos y el cuidado absoluto del ciclo de vida natural de los datos de investigación, han validado 
+la solidez del diseño preliminar expuesto en el Capítulo~\ref{ch:proposal}. Estos resultados arquitectónicos 
+garantizan que el \textit{software} final constituya una infraestructura fundacional 
+capaz de catalizar e incentivar directamente los futuros desarrollos de análisis médicos automatizados 
+liderados por la Facultad de Matemática y Computación de la Universidad de La Habana.
