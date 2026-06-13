@@ -1,2 +1,111 @@
-\chapter*{Introducción}\label{chapter:introduction}
-\addcontentsline{toc}{chapter}{Introducción}
+\chapter{Introducción}\label{ch:introduccion}
+
+
+En el panorama contemporáneo, el desarrollo de sistemas computacionales y arquitecturas orientadas a la 
+gestión en el sector de la salud juega un rol determinante en la modernización de los procesos de seguimiento 
+y diagnóstico médico. Específicamente dentro de la investigación dermatológica, la capacidad de almacenar, 
+organizar y proveer información estructurada de manera ágil se ha convertido en una necesidad tecnológica 
+indispensable. Para Cuba, el avance hacia la madurez y soberanía científico-tecnológica implica el desarrollo 
+e incorporación de plataformas de \textit{software} propias, capaces de moldearse a las exigencias regulatorias, 
+dinámicas de trabajo y características de su sistema de salud pública.
+
+Surge así, como una integración interinstitucional, el Ecosistema DermaUH; un esfuerzo dirigido por la 
+Facultad de Matemática y Computación de la Universidad de La Habana. Un ecosistema informático de tal 
+magnitud, construido de forma multimodal para abarcar tanto interfaces web como aplicaciones desplegadas 
+en terminales móviles, precisa ineludiblemente de una base centralizada. Este componente de arquitectura 
+debe asumir el rol fundamental de persistir las observaciones y constituir el acervo que abastezca de 
+información a las distintas capas de servicio. Disponer de este bloque fundacional no solo facilita la 
+sustitución de aplicaciones importadas u onerosas, sino que además salvaguarda los datos médicos, 
+considerándolo un requisito intrínseco de soberanía nacional.
+
+Históricamente, los especialistas e investigadores han recurrido a ecosistemas foráneos y repositorios 
+genéricos en un esfuerzo por suplir la ausencia de herramientas integrales en la región. Durante años, 
+la investigación asistida por computadora a nivel mundial ha logrado hitos relevantes sentando principios 
+de estandarización para bancos de datos dermatológicos. No obstante, al procurar 
+emplear metodológicamente dichos contenedores en un entorno distinto, resulta palpable una desconexión 
+metodológica y técnica.
+
+En el país, las prácticas dermatológicas cotidianas y la investigación científica llevada a cabo por 
+académicos han adolecido de una plataforma propia que cierre el ciclo de vida del dato médico: desde 
+el momento exacto en que se adquiere la imagen mediante dispositivos personales en una consulta local, 
+hasta su enriquecimiento a través de anotaciones de especialistas. La utilización aislada de repositorios 
+internacionales\footnote{Véase el Capítulo \ref{ch:estado-del-arte} para un análisis detallado de las 
+principales bases de imágenes dermatológicas globales, sus características técnicas y limitaciones.}
+no satisface la necesidad de retroalimentación inmediata, ni facilita la elaboración de 
+resúmenes estadísticos que consideren las divisiones demográficas de la población, un requisito vital 
+para la epidemiología del país y para cimentar futuros modelos predictivos adaptados a las condiciones 
+de la región. De esta desconexión entre la disponibilidad teórica de galerías de imágenes en Internet y 
+la carencia empírica de un motor de bases de datos integrado a los servicios consumibles por el médico 
+nacional, emerge la justificación primordial del actual desarrollo de \textit{software}.
+
+La investigación realizada parte de una contradicción evidente: el ecosistema médico y tecnológico en Cuba carece de 
+una plataforma integrada que no solo almacene imágenes clínicas y dermatoscópicas, sino que las dote de 
+anotaciones de calidad, capacidades de generación de estadísticas y total integración con sistemas de 
+software heterogéneos. Por lo tanto, el \textbf{problema científico} 
+de esta investigación queda definido mediante la interrogante: ¿Cómo diseñar y desarrollar una base de 
+imágenes dermatoscópicas anotadas que, operando como el núcleo de persistencia y análisis dentro del 
+ecosistema DermaUH, garantice la fiabilidad, flexibilidad y escalabilidad necesarias para apoyar el 
+diagnóstico clínico, la capacitación y la investigación biomédica en el país?
+
+
+Atendiendo al problema planteado expuesto, se delimita como \textbf{objeto de estudio} el proceso de gestión, 
+integración y análisis de imágenes médicas dentro de infraestructuras de \textit{software} sanitario. De manera más 
+concreta, el \textbf{campo de acción} donde incide directamente este proyecto es el diseño e implementación 
+de bases de datos médicas y arquitecturas de software bajo un enfoque matemático-computacional, orientados 
+a la dermatología asistida.
+
+Como \textbf{objetivo general}, se persigue desarrollar la Base de Imágenes dermatoscópicas anotadas asociada 
+al ecosistema DermaUH, garantizando que conste de la flexibilidad necesaria para integrarse a aplicaciones 
+externas y operar como fuente para la investigación biomédica y la visualización de estadísticas demográficas.
+
+Para materializar este propósito, se trazan los siguientes \textbf{objetivos específicos}:
+\begin{itemize}
+    \item Lograr una panorámica de las principales bases de imágenes anotadas de la dermatología a 
+    nivel global, examinando sus arquitecturas, servicios y esquemas de metadatos.
+    \item Desarrollar y modelar una base de datos flexible, exhaustivamente anotada, que forme parte intrínseca 
+    del ecosistema DermaUH, es decir, que adquiera datos y se nutra dinámicamente desde la aplicación web y la 
+    aplicación móvil institucional.
+    \item Lograr que este diseño arquitectónico y de datos posibilite obtener disímiles estadísticas 
+    poblacionales y analíticas que sirvan como apoyo fundamental al diagnóstico experto y a la capacitación 
+    de nuevos galenos.
+\end{itemize}
+
+
+La transformación digital del sector de la salud constituye una prioridad ineludible. En la actualidad, el 
+desarrollo de historia clínica electrónica y la patología digital se posicionan como pilares en los 
+sistemas sanitarios modernos~\cite{prensalatina_dermauh}. 
+
+La novedad científica de este trabajo reside en su enfoque de ciclo cerrado, donde se abarca 
+la integración multimodal de recolección \textit{in the wild} —mediante dispositivos móviles en 
+consulta— hacia un repositorio estructurado que responde a esquemas formales y normalizados bajo el 
+estándar del proyecto. Este paradigma se aleja del tradicional almacenamiento pasivo para concebir 
+una arquitectura dinámica y orientada a servicios que permite al ecosistema no solo ver consultas y 
+emitir diagnósticos en tiempo real, sino generar inteligencia acumulativa en torno a características 
+demográficas específicas. 
+
+Desde la dimensión de la importancia teórica y práctica, la tesis fortalece el \textit{corpus} metodológico 
+en la ingeniería de software aplicada a la bioinformática en plataformas de escasos recursos. Su utilización 
+trasciende el ejercicio académico, introduciendo un activo tecnológico que dota a la Facultad de Matemática 
+y Computación y a los centros de salud asociados de un producto soberano de incalculable valor. Fomenta 
+indirectamente la creación de redes neuronales sin sesgo, elevando la precisión y democratizando el acceso 
+a diagnósticos preventivos de alta gama.
+
+
+El transcurso de esta investigación se sustenta en la siguiente \textbf{hipótesis} de corte ingenieril y 
+práctico: si se diseña e implementa una arquitectura flexible para una base de imágenes dermatoscópicas 
+que integre de manera coherente metadatos clínicos locales y se acople fluidamente con las aplicaciones 
+web y móviles del Ecosistema DermaUH, entonces será factible elevar la organización y trazabilidad de los 
+datos dermatológicos en el país, impulsando favorablemente la precisión del diagnóstico clínico, el 
+suministro de datos estadísticos fiables y la capacitación efectiva de especialistas de la salud.
+
+Para un mejor abordaje y comprensión del proyecto, el presente documento se encuentra divido en secciones 
+claramente definidas. El \textbf{Capítulo \ref{ch:estado-del-arte}} aborda el Estado del Arte, estudiando 
+sistémicamente los esfuerzos mundiales en repositorios dermatológicos y estableciendo paralelos técnicos. 
+Seguidamente, en el \textbf{Capítulo \ref{ch:proposal}} se expone la Propuesta, abarcando el sustento lógico, 
+los flujogramas de información, los esquemas de bases de datos y la estructuración del diseño 
+teórico-práctico. El \textbf{Capítulo \ref{ch:implementation}} detalla la Implementación tecnológica, 
+precisando las herramientas, los lenguajes y los resultados algorítmicos tangibles en el contexto del 
+ecosistema. Finalmente, la obra cierra enunciando de forma sintetizada las conclusiones a las que se arriban 
+tras el desarrollo funcional de la herramienta, e incluye recomendaciones prospectivas que delinean la hoja de 
+ruta de la investigación en sus siguientes etapas funcionales. Además, se agrega un apartado con la 
+bibliografía y las referencias bibliográficas utilizadas como sustento del trabajo.
