@@ -1,7 +1,60 @@
 \begin{resumen}
-	Resumen en español
+La transformación digital del sector de la salud exige el desarrollo de infraestructuras de datos soberanas 
+que respondan a las particularidades epidemiológicas y demográficas de cada región. En el ámbito de la 
+dermatología computacional, los principales repositorios internacionales de imágenes ---como ISIC, 
+HAM10000, BCN20000, PAD-UFES-20 y Derm7pt--- exhiben sesgos demográficos sistemáticos, con una 
+desproporción a favor de fototipos claros (Fitzpatrick I--III), lo que compromete 
+la equidad algorítmica y la fiabilidad de los modelos de inteligencia artificial cuando se aplican a 
+poblaciones con alta diversidad fenotípica, como la cubana.
+
+La presente investigación aborda el diseño, desarrollo e implementación de la Base de Imágenes 
+Dermatoscópicas del ecosistema DermaUH, una plataforma integral concebida como el núcleo de persistencia 
+y análisis del ecosistema informático liderado por la Facultad de Matemática y Computación de la 
+Universidad de La Habana. El sistema propuesto adopta una arquitectura por capas fundamentada en 
+los principios de la Arquitectura Limpia, materializada sobre la plataforma .NET~10, el lenguaje 
+C\#~13, el motor relacional PostgreSQL~17 y la interfaz interactiva Blazor Server. El esquema de 
+datos diseñado incorpora más de 30 atributos clínicos estructurados por registro, incluyendo 
+variables demográficas, antecedentes epidemiológicos, indicadores histológicos y metadatos 
+institucionales.
+Entre las contribuciones principales se destacan: la implementación de un motor de validación clínica con 
+reglas condicionales que garantiza la coherencia médica de los metadatos; un sistema de control de acceso 
+basado en roles con autenticación JWT y OAuth~2.0; mecanismos de exportación masiva en formatos CSV y ZIP 
+orientados a la generación de conjuntos de datos listos para el aprendizaje profundo; y un cuadro de mando 
+analítico con visualizaciones estadísticas demográficas y geográficas. La plataforma resultante constituye 
+un activo tecnológico soberano, diseñado para capturar la diversidad fenotípica de la población cubana y 
+contribuir a la reducción de la brecha de equidad algorítmica documentada en la literatura científica 
+internacional.
+
+\textbf{Palabras clave:} base de imágenes dermatoscópicas, ecosistema DermaUH, soberanía tecnológica, 
+inteligencia artificial, equidad algorítmica, arquitectura de software, metadatos clínicos.
 \end{resumen}
 
 \begin{abstract}
-	Resumen en inglés
+The digital transformation of the healthcare sector demands the development of sovereign data 
+infrastructures that address the epidemiological and demographic particularities of each region. 
+In the field of computational dermatology, leading international image repositories ---such as ISIC, 
+HAM10000, BCN20000, PAD-UFES-20, and Derm7pt--- exhibit systematic demographic biases, with a 
+disproportion in favor of light skin phototypes (Fitzpatrick I--III), thereby compromising algorithmic 
+fairness and the reliability of artificial intelligence models when applied to populations with high 
+phenotypic diversity, such as the Cuban population.
+
+This research addresses the design, development, and implementation of the Dermoscopic Image Database for 
+the DermaUH ecosystem, a comprehensive platform conceived as the core persistence and analysis component 
+of the informatics ecosystem led by the Faculty of Mathematics and Computer Science at the University of 
+Havana. The proposed system adopts a layered architecture grounded in Clean Architecture principles, built 
+upon the .NET~10 platform, the C\#~13 programming language, the PostgreSQL~17 relational engine, and the 
+Blazor Server interactive interface. The data schema incorporates over 30 structured clinical attributes 
+per record,including demographic variables, epidemiological history, histological indicators, and 
+institutional metadata.
+
+Key contributions include: the implementation of a clinical validation engine with conditional rules that 
+ensures the medical consistency of metadata; a role-based access control system with JWT and OAuth~2.0 
+authentication; bulk export mechanisms in CSV and ZIP formats oriented toward generating AI-ready datasets; 
+and an analytical dashboard featuring demographic and geographic statistical visualizations. The resulting 
+platform constitutes a sovereign technological asset, designed to capture the phenotypic diversity of the 
+Cuban population and contribute to reducing the algorithmic fairness gap documented in the international 
+scientific literature.
+
+\textbf{Keywords:} dermoscopic image database, DermaUH ecosystem, technological sovereignty, artificial 
+intelligence, algorithmic fairness, software architecture, clinical metadata.
 \end{abstract}

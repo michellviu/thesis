@@ -1,3 +1,23 @@
 \begin{conclusions}
-    Conclusiones
+El desarrollo de la presente investigación ha permitido materializar una plataforma integral para la gestión de imágenes dermatoscópicas dentro del ecosistema DermaUH, dando respuesta al problema científico planteado y validando la hipótesis de partida. A continuación se sintetizan las conclusiones fundamentales derivadas del trabajo realizado:
+
+\begin{enumerate}
+    \item El análisis exhaustivo del estado del arte de los principales repositorios internacionales de imágenes dermatológicas ---ISIC, HAM10000, BCN20000, PAD-UFES-20 y Derm7pt--- evidenció una desproporción sistemática superior a 20:1 a favor de fototipos claros (Fitzpatrick I--III), así como una concentración geográfica en centros de excelencia europeos, norteamericanos y australianos. Esta realidad fundamenta la necesidad imperativa de construir un repositorio soberano que capture la diversidad fenotípica de la población cubana, caracterizada por una prevalencia significativa de fototipos III, IV y V.
+
+    \item Se diseñó y modeló un esquema de base de datos relacional que incorpora más de 30 atributos clínicos estructurados por registro, abarcando variables demográficas, antecedentes epidemiológicos, características clínicas de la lesión, clasificación diagnóstica con su método de confirmación e indicadores histológicos específicos para melanoma. Este esquema se alineó deliberadamente con la taxonomía del diccionario de datos ISIC v2.4, garantizando la interoperabilidad futura con repositorios internacionales y la generación de conjuntos de datos listos para el entrenamiento de modelos de inteligencia artificial.
+
+    \item La arquitectura del sistema se fundamentó en los principios de la Arquitectura Limpia, implementada mediante cuatro capas lógicas claramente diferenciadas ---Dominio, Aplicación, Infraestructura y Presentación--- que garantizan la separación de responsabilidades, la independencia tecnológica del núcleo de negocio y la escalabilidad del sistema ante futuras extensiones funcionales.
+
+    \item Se implementó un motor de validación clínica con reglas condicionales que trasciende las restricciones convencionales de campos obligatorios, garantizando la coherencia médica de los metadatos mediante un árbol de decisión que refleja restricciones clínicas reales. Este mecanismo eleva la calidad del \textit{corpus} de datos y previene la persistencia de registros inconsistentes, aspecto crítico para la fiabilidad del entrenamiento de modelos de aprendizaje profundo.
+
+    \item La plataforma desarrollada integra un sistema de seguridad multicapa que combina autenticación mediante JSON Web Tokens firmados con HMAC-SHA256, autenticación delegada mediante Google OAuth~2.0, control de acceso basado en roles y una política de seguridad por defecto (\textit{secure-by-default}) que minimiza la superficie de ataque y protege los datos clínicos sensibles.
+
+    \item Se implementaron mecanismos de exportación masiva en formatos CSV y ZIP, acoplados a un flujo de autorización explícita, que habilitan la integración directa con los \textit{pipelines} de entrenamiento de modelos de inteligencia artificial, cumpliendo el objetivo estratégico de que los datos recopilados constituyan un activo de alto valor para la investigación computacional.
+
+    \item El módulo de estadísticas y analíticas desarrollado permite la generación de visualizaciones interactivas de distribuciones diagnósticas, demográficas y geográficas, proporcionando a los especialistas y administradores una herramienta de apoyo al diagnóstico y a la toma de decisiones epidemiológicas fundamentada en datos reales del territorio nacional.
+
+    \item La integración multimodal del sistema ---que articula una API REST documentada con el estándar OpenAPI, una interfaz web interactiva basada en Blazor Server y la capacidad de interoperar con aplicaciones móviles--- valida la viabilidad del enfoque de ciclo cerrado propuesto, donde la recolección de datos clínicos desde la consulta médica fluye hacia un repositorio estructurado y normalizado que retroalimenta la investigación y la capacitación.
+\end{enumerate}
+
+En síntesis, la investigación ha demostrado que es factible diseñar e implementar una arquitectura flexible para una base de imágenes dermatoscópicas que integre metadatos clínicos locales y se acople fluidamente con las aplicaciones del ecosistema DermaUH, elevando la organización y trazabilidad de los datos dermatológicos en el país. El producto de \textit{software} resultante constituye un activo tecnológico soberano de incalculable valor para la Facultad de Matemática y Computación y los centros de salud asociados, sentando las bases para el desarrollo de una inteligencia artificial dermatológica verdaderamente equitativa y clínicamente pertinente en el contexto cubano.
 \end{conclusions}

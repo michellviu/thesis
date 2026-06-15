@@ -1,3 +1,27 @@
 \begin{recomendations}
-    Recomendaciones
+El desarrollo de la Base de Imágenes de DermaUH ha sentado las bases fundacionales de una infraestructura de datos clínicos que, por su naturaleza, admite y requiere un proceso continuo de evolución y enriquecimiento. A partir de la experiencia acumulada durante la investigación y el análisis de las tendencias actuales en dermatología computacional, se formulan las siguientes recomendaciones para las etapas sucesivas del proyecto:
+
+\begin{enumerate}
+    \item \textbf{Incorporación de máscaras de segmentación.} Se recomienda extender el esquema de datos para almacenar máscaras de segmentación binarias asociadas a cada imagen dermatoscópica, siguiendo la metodología establecida por iniciativas como IMA++. La inclusión de anotaciones de segmentación a nivel de píxel habilitaría el entrenamiento de arquitecturas de redes neuronales para la delimitación automática de lesiones, ampliando significativamente el espectro de aplicaciones de inteligencia artificial soportadas por el repositorio.
+
+    \item \textbf{Desarrollo de un módulo de anotación colaborativa en línea.} Se propone implementar una interfaz de anotación web que permita a múltiples especialistas etiquetar y validar imágenes de forma concurrente, incorporando mecanismos de consenso y medición del acuerdo inter-observador. Este enfoque, inspirado en las prácticas del archivo ISIC, fortalecería la calidad de las etiquetas diagnósticas y permitiría cuantificar objetivamente la variabilidad inter-experto.
+
+    \item \textbf{Integración con la aplicación móvil del ecosistema.} Se recomienda materializar la integración bidireccional con la aplicación móvil DermaUH mediante los terminales de la API REST ya documentados, cerrando el ciclo completo de captura \textit{in the wild} desde dispositivos móviles en la consulta médica hasta la persistencia estructurada en el repositorio central. Esta integración constituiría la materialización plena del paradigma de ciclo cerrado propuesto en la investigación.
+
+    \item \textbf{Implementación de técnicas de aumento de datos y generación sintética.} Dada la previsible escasez inicial de imágenes en determinadas categorías diagnósticas y fototipos de piel, se recomienda explorar la integración de técnicas de aumento de datos y modelos generativos para la síntesis de imágenes dermatológicas, siguiendo la línea de investigación establecida por herramientas como DermaSynth, con el objetivo de mitigar el desbalance estadístico inherente a las fases tempranas de la recolección.
+
+    \item \textbf{Desarrollo de un módulo de control de calidad de imagen.} Se sugiere incorporar filtros automáticos de calidad de imagen basados en redes neuronales ligeras que evalúen indicadores de nitidez, exposición y enfoque en el momento de la carga, inspirados en el \textit{framework} DermAI. Este componente elevaría la homogeneidad técnica del \textit{corpus} y reduciría la necesidad de curación manual posterior.
+
+    \item \textbf{Expansión del cuadro de mando analítico.} Se recomienda enriquecer el módulo de estadísticas con visualizaciones temporales que permitan analizar tendencias epidemiológicas a lo largo del tiempo, así como incorporar tabulaciones cruzadas más complejas que combinen variables demográficas, clínicas y geográficas para habilitar estudios de epidemiología descriptiva de mayor profundidad.
+
+    \item \textbf{Implementación de un sistema de versionado de datos.} Para garantizar la reproducibilidad de los experimentos de inteligencia artificial que utilicen el repositorio como fuente de entrenamiento, se recomienda implementar un mecanismo de versionado de los conjuntos de datos exportados, que permita a los investigadores referenciar y recuperar instantáneas exactas del \textit{corpus} en momentos específicos del tiempo.
+
+    \item \textbf{Evaluación y despliegue en infraestructura institucional.} Se recomienda coordinar con la Dirección de Informatización de la Universidad de La Habana el despliegue del sistema en los servidores institucionales, realizando pruebas de carga y rendimiento con volúmenes progresivos de datos para validar la escalabilidad del diseño arquitectónico en condiciones reales de operación.
+
+    \item \textbf{Contribución al ecosistema ISIC.} Una vez alcanzado un volumen significativo de imágenes con metadatos validados y consentimiento informado verificado, se recomienda explorar la contribución de los datos cubanos al archivo ISIC, aprovechando la compatibilidad estructural del esquema de metadatos diseñado. Esta acción posicionaría a la Universidad de La Habana como un centro contribuyente reconocido en la comunidad internacional de dermatología computacional y ampliaría la representatividad fenotípica de los repositorios globales.
+
+    \item \textbf{Publicación científica de los resultados.} Se recomienda elaborar publicaciones científicas que documenten tanto la arquitectura del sistema como los primeros análisis epidemiológicos derivados de los datos recopilados, dirigidas a revistas especializadas en informática médica y dermatología digital. La originalidad del enfoque ---un repositorio soberano con datos de una población fenotípicamente diversa y subrepresentada--- constituye un aporte de alto interés para la comunidad científica internacional.
+\end{enumerate}
+
+La ejecución de estas recomendaciones permitirá evolucionar la Base de Imágenes de DermaUH desde un repositorio institucional operativo hacia una plataforma de referencia para la investigación dermatológica computacional en el contexto latinoamericano y caribeño, consolidando el liderazgo de la Universidad de La Habana en el desarrollo de tecnologías de salud soberanas y equitativas.
 \end{recomendations}

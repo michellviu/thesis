@@ -714,6 +714,363 @@ canal de \textit{middleware}. \\
 \hline
 \end{longtable}
 
+\section{Pruebas Funcionales}
+Con el propósito de validar el correcto funcionamiento de los módulos implementados y evidenciar la
+materialización de los requisitos funcionales especificados en el diseño del sistema, se presenta a
+continuación un recorrido visual por los principales paneles de la aplicación DermaUH Images. Cada
+captura de pantalla documenta el estado operativo de un componente específico de la interfaz, permitiendo
+al lector verificar la coherencia entre el diseño propuesto y la implementación final desplegada.
+
+\subsection{Página de Inicio y Navegación Principal}
+La página de inicio constituye el punto de entrada principal al ecosistema DermaUH Images. Desde esta
+vista, el usuario accede a una presentación institucional del proyecto, acompañada de elementos visuales
+que facilitan la navegación hacia los módulos funcionales del sistema. En ella se concentra la identidad
+visual del proyecto, información introductoria sobre la base de datos dermatológica y los accesos directos
+a las secciones principales de la plataforma.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_inicio.png}
+    \caption{Página de inicio de DermaUH Images.}
+    \label{fig:pagina_inicio}
+\end{figure}
+
+En módulo de Instituciones se despliega un carrusel interactivo que exhibe de forma
+dinámica y rotativa las instituciones médicas y académicas que contribuyen activamente al crecimiento
+del repositorio de imágenes dermatológicas, reforzando la transparencia institucional del proyecto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Carrusel_de_Instituciones.png}
+    \caption{Carrusel de instituciones contribuyentes.}
+    \label{fig:carrusel_instituciones}
+\end{figure}
+
+\subsection{Autenticación y Gestión de Cuentas}
+El módulo de autenticación implementa los flujos de acceso seguro al sistema, incluyendo el inicio de
+sesión con credenciales locales e integración con el proveedor de identidad Google OAuth~2.0, así como
+el registro de nuevos usuarios y los mecanismos de recuperación de contraseñas.
+
+El panel de inicio de sesión (Figura~\ref{fig:inicio_sesion}) ofrece autenticación mediante credenciales
+locales ---correo electrónico y contraseña--- y mediante el botón de inicio de sesión con Google,
+materializando el flujo de autenticación delegada OAuth~2.0 descrito en la arquitectura del sistema.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_Inicio_sesion.png}
+    \caption{Panel de inicio de sesión.}
+    \label{fig:inicio_sesion}
+\end{figure}
+
+El formulario de registro (Figura~\ref{fig:registro}) recopila los datos personales e institucionales
+del solicitante, incluyendo la aceptación obligatoria de los términos y condiciones de uso del
+repositorio de imágenes clínicas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_Registro.png}
+    \caption{Formulario de registro de nuevos usuarios.}
+    \label{fig:registro}
+\end{figure}
+
+Las Figuras~\ref{fig:terminos_1} y~\ref{fig:terminos_2} muestran el documento de términos y condiciones
+de uso de la plataforma. Este documento establece el marco legal y ético bajo el cual los usuarios acceden
+a las imágenes dermatológicas, incluyendo las cláusulas de consentimiento informado, las restricciones de
+uso del material clínico, las disposiciones relativas a la propiedad intelectual, la privacidad de los
+datos y las responsabilidades del usuario registrado.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Terminos_y_Condiciones_1.png}
+    \caption{Términos y condiciones de uso (primera parte).}
+    \label{fig:terminos_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Terminos_y_Condiciones_2.png}
+    \caption{Términos y condiciones de uso (segunda parte).}
+    \label{fig:terminos_2}
+\end{figure}
+
+El panel de recuperación de contraseña (Figura~\ref{fig:recuperacion_contrasenna}) permite al usuario
+solicitar un enlace de restablecimiento mediante su dirección de correo electrónico registrada, activando
+el flujo seguro de recuperación de credenciales del sistema.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_recuperacion_de_contrasenna.png}
+    \caption{Panel de recuperación de contraseña.}
+    \label{fig:recuperacion_contrasenna}
+\end{figure}
+
+La vista de perfil de usuario (Figura~\ref{fig:perfil_usuario}) despliega la información personal del
+usuario autenticado, su rol asignado en el sistema, el estado de su autorización de descarga masiva y
+el historial de solicitudes de descarga realizadas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Perfil_de_Usuario.png}
+    \caption{Perfil de usuario autenticado.}
+    \label{fig:perfil_usuario}
+\end{figure}
+
+\subsection{Galería de Imágenes y Exploración del Repositorio}
+La galería de imágenes constituye el módulo central de consulta del repositorio clínico. Implementa un
+sistema de exploración visual con desplazamiento infinito y un motor de filtrado multifacetado que permite
+a los investigadores localizar imágenes según criterios clínicos, demográficos y diagnósticos específicos.
+
+La Figura~\ref{fig:galeria} presenta las fotografías clínicas organizadas en un diseño de cuadrícula
+responsiva con desplazamiento infinito, mostrando para cada imagen una previsualización acompañada de
+sus metadatos diagnósticos principales.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_Galeria.png}
+    \caption{Galería de exploración de imágenes dermatológicas.}
+    \label{fig:galeria}
+\end{figure}
+
+El sistema de filtrado avanzado (Figura~\ref{fig:filtros_galeria}) permite la aplicación combinada de
+múltiples criterios de búsqueda ---categoría diagnóstica, tipo de imagen, localización anatómica, rango
+etario, sexo del paciente, entre otros--- para refinar los resultados de exploración según las necesidades
+específicas de la investigación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Uso_de_filtros_en_Galeria.png}
+    \caption{Sistema de filtrado avanzado de la galería.}
+    \label{fig:filtros_galeria}
+\end{figure}
+
+La vista de detalle de una imagen dermatológica se presenta en las Figuras~\ref{fig:detalle_imagen_1}
+y~\ref{fig:detalle_imagen_2}. En la parte superior se muestra la fotografía clínica en resolución completa
+junto con los metadatos principales del registro: identificador público, categoría diagnóstica, tipo de
+imagen, datos demográficos anonimizados del paciente y contexto de adquisición. La parte inferior
+presenta los metadatos clínicos extendidos, incluyendo la información histológica cuando está disponible,
+el método de confirmación diagnóstica y los atributos adicionales relevantes para la investigación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_detalle_Imagen_1.png}
+    \caption{Vista de detalle de imagen dermatológica (parte superior).}
+    \label{fig:detalle_imagen_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_detalle_Imagen_2.png}
+    \caption{Vista de detalle de imagen dermatológica (parte inferior).}
+    \label{fig:detalle_imagen_2}
+\end{figure}
+
+\subsection{Solicitud de Descarga Masiva}
+El formulario de solicitud de descarga masiva (Figura~\ref{fig:formulario_descarga}) materializa el flujo
+de autorización controlada que permite a los investigadores obtener conjuntos completos de imágenes con sus
+metadatos asociados. El usuario debe proporcionar una justificación detallada del propósito de la descarga
+y su afiliación institucional; la solicitud queda en estado pendiente hasta que un administrador la revise
+y autorice.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Formulario_para_descarga.png}
+    \caption{Formulario de solicitud de descarga masiva.}
+    \label{fig:formulario_descarga}
+\end{figure}
+
+\subsection{Portal para Desarrolladores}
+El portal para desarrolladores (Figura~\ref{fig:portal_desarrolladores}) ofrece documentación técnica
+interactiva dirigida a investigadores y desarrolladores externos que deseen integrar sus sistemas con la
+API REST de DermaUH Images. Este módulo proporciona la guía de integración, el diccionario completo de
+metadatos clínicos con sus tipos de datos y valores permitidos, y ejemplos de uso que facilitan la
+incorporación del repositorio en flujos de trabajo de investigación y entrenamiento de modelos de
+inteligencia artificial.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_para_desarrolladores.png}
+    \caption{Portal para desarrolladores.}
+    \label{fig:portal_desarrolladores}
+\end{figure}
+
+\subsection{Cuadro de Mando Estadístico}
+El módulo de analíticas proporciona un cuadro de mando interactivo con visualizaciones gráficas que
+sintetizan las métricas cuantitativas del repositorio. Estas estadísticas permiten a los investigadores
+evaluar la composición, la diversidad y la representatividad del conjunto de datos disponible.
+
+La vista general del cuadro de mando (Figura~\ref{fig:estadisticas_1}) presenta los indicadores globales
+del repositorio, incluyendo el número total de imágenes, la distribución por sitio anatómico y las métricas de crecimiento del conjunto de datos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_1.png}
+    \caption{Cuadro de mando estadístico (vista general).}
+    \label{fig:estadisticas_1}
+\end{figure}
+
+La Figura~\ref{fig:estadisticas_2} visualiza la proporción de imágenes según su clasificación
+diagnóstica dado el sexo, permitiendo identificar las categorías con mayor y menor representación en el conjunto
+de datos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_2.png}
+    \caption{Distribución diagnóstica vs sexo.}
+    \label{fig:estadisticas_2}
+\end{figure}
+
+La Figura~\ref{fig:estadisticas_3} muestra la proporción de imágenes según del tipo de
+lesión por grupos de edades presentes en el repositorio.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_3.png}
+    \caption{Distribución por tipo de lesión vs grupos de edades.}
+    \label{fig:estadisticas_3}
+\end{figure}
+
+La Figura~\ref{fig:estadisticas_4} presenta la proporción del diagnóstico del paciente según su color de piel.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_4.png}
+    \caption{Distribución por diagnóstico vs color de piel.}
+    \label{fig:estadisticas_4}
+\end{figure}
+
+La Figura~\ref{fig:estadisticas_5} muestra la frecuencia de lesiones según la región corporal de
+aparición, proporcionando información valiosa sobre los patrones topográficos del repositorio.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_5.png}
+    \caption{Distribución por diagnóstico vs sitio anatómico.}
+    \label{fig:estadisticas_5}
+\end{figure}
+
+La Figura~\ref{fig:estadisticas_6} visualiza el origen geográfico de las imágenes registradas,
+evidenciando la cobertura territorial del ecosistema de recolección de datos dermatológicos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_6.png}
+    \caption{Distribución por localización geográfica.}
+    \label{fig:estadisticas_6}
+\end{figure}
+
+La Figura~\ref{fig:estadisticas_7} visualiza las distribuciones generales del repositorio según los metadatos
+más representativos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_7.png}
+    \caption{Distribuciones generales del repositorio.}
+    \label{fig:estadisticas_7}
+\end{figure}
+
+Finalmente, la Figura~\ref{fig:estadisticas_8} presenta indicadores complementarios que enriquecen la
+caracterización cuantitativa del conjunto de datos, donde se incluye la completitud de los metadatos en las imágenes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_de_estadisticas_8.png}
+    \caption{Métricas adicionales del repositorio.}
+    \label{fig:estadisticas_8}
+\end{figure}
+
+\subsection{Paneles de Administración}
+Los paneles administrativos están destinados exclusivamente a los usuarios con rol de Administrador e
+implementan las funcionalidades de gestión centralizada del ecosistema. Estos módulos permiten la
+supervisión de usuarios, la revisión de solicitudes pendientes y el control de acceso al repositorio.
+
+El panel de gestión de usuarios (Figura~\ref{fig:admin_usuarios}) permite visualizar el listado completo
+de usuarios registrados, sus roles asignados y su estado de activación, así como ejecutar operaciones
+administrativas como la asignación de roles, la activación o desactivación de cuentas y la eliminación
+lógica de usuarios.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Panel_administrativo_de_usuarios.png}
+    \caption{Panel administrativo de gestión de usuarios.}
+    \label{fig:admin_usuarios}
+\end{figure}
+
+El panel de solicitudes de registro (Figura~\ref{fig:admin_solicitud_registro}) muestra las solicitudes
+pendientes de aprobación, permitiendo al administrador evaluar la información institucional del solicitante
+y aprobar o rechazar su incorporación al ecosistema.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Panel_administrativo_de_solicitud_de_registro.png}
+    \caption{Panel de revisión de solicitudes de registro.}
+    \label{fig:admin_solicitud_registro}
+\end{figure}
+
+El panel de solicitudes de descarga (Figura~\ref{fig:admin_solicitudes_descarga}) presenta las solicitudes
+pendientes con la justificación proporcionada por cada solicitante, permitiendo al administrador autorizar
+o denegar el acceso a la descarga masiva del repositorio.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Panel_administrativo_de_solicitudes_de_descarga.png}
+    \caption{Panel de gestión de solicitudes de descarga masiva.}
+    \label{fig:admin_solicitudes_descarga}
+\end{figure}
+
+\subsection{Notificaciones por Correo Electrónico}
+El sistema de notificaciones transaccionales por correo electrónico constituye un componente esencial
+para la comunicación automatizada entre la plataforma y sus usuarios. Cada evento relevante del ciclo
+de vida del usuario genera una notificación específica que garantiza la trazabilidad de las operaciones
+y la fluidez de los procesos administrativos.
+
+El correo de confirmación de registro (Figura~\ref{fig:correo_confirmar_registro}) se envía
+automáticamente al usuario luego de ser aprobado su registro por un Administrador.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/Pruebas Funcionales/Correo_al_usuario_para_confirmar_registro.png}
+    \caption{Correo electrónico de confirmación de registro.}
+    \label{fig:correo_confirmar_registro}
+\end{figure}
+
+La notificación administrativa de nueva solicitud de registro (Figura~\ref{fig:correo_solicitar_registro})
+se envía a todos los administradores activos del sistema cuando un nuevo usuario completa su registro,
+alertando sobre la necesidad de revisar y aprobar la solicitud pendiente.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/Pruebas Funcionales/Correo_administrativo_para_solicitar_registro.png}
+    \caption{Notificación administrativa de nueva solicitud de registro.}
+    \label{fig:correo_solicitar_registro}
+\end{figure}
+
+La notificación de solicitud de descarga (Figura~\ref{fig:correo_solicitud_descarga}) informa a los
+administradores sobre una nueva solicitud de descarga masiva presentada por un investigador, incluyendo
+la justificación proporcionada y los datos institucionales del solicitante para facilitar la evaluación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/Pruebas Funcionales/Correo_administrativo_para_notificar_solicitud_de_descarga.png}
+    \caption{Notificación administrativa de solicitud de descarga masiva.}
+    \label{fig:correo_solicitud_descarga}
+\end{figure}
+
+El correo de recuperación de contraseña (Figura~\ref{fig:correo_recuperar_contrasenna}) contiene un
+enlace seguro de un solo uso que permite al usuario restablecer su contraseña, implementando el flujo
+estándar de recuperación de credenciales con token de verificación temporal.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/Pruebas Funcionales/Correo_para_recuperar_contrasenna.png}
+    \caption{Correo electrónico de recuperación de contraseña.}
+    \label{fig:correo_recuperar_contrasenna}
+\end{figure}
+
+El conjunto de capturas presentado en esta sección evidencia la implementación completa y funcional de
+los requisitos especificados en el diseño del sistema. Cada módulo opera de forma coherente con la
+arquitectura propuesta, materializando los flujos de trabajo definidos para los distintos perfiles de
+usuario y garantizando una experiencia de uso profesional, segura y accesible.
+
 \section{Conclusiones del Capítulo}
 La materialización tecnológica de la herramienta DermaUH Image Database a través de entornos contemporáneos 
 como .NET~10~\cite{aspnet_core_docs}, el ecosistema Blazor~\cite{blazor_docs}, el motor relacional 
