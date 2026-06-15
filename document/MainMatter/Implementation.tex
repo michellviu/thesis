@@ -58,7 +58,7 @@ nativamente un contenedor de DI que soporta tres modalidades de ciclo de vida: \
 automatizada facilita el desacoplamiento entre clases, posibilita la escritura de pruebas unitarias 
 robustas y garantiza la correcta liberación de recursos costosos como las conexiones a bases de datos.
 
-\section{Arquitectura General del Sistema DermaUH}
+\section{Arquitectura General del Sistema DermaUH Images}
 El sistema de la base de imágenes se encuentra construido integralmente sobre la plataforma .NET en su 
 versión 10~\cite{aspnet_core_docs}, utilizando el lenguaje de programación C\# 13~\cite{csharp_13_docs}. 
 A nivel de código fuente, el proyecto se organiza como un repositorio unificado (\textit{monorepo}) 
@@ -134,7 +134,7 @@ mecanismo elimina la necesidad de ejecutar comandos manuales de migración duran
 reduciendo significativamente el riesgo de inconsistencias entre el modelo de datos del código y el 
 esquema físico de la base de datos.
 
-\subsection{Capa de Dominio (\texttt{Domain.DermaImage})}
+\subsection{Capa de Dominio}
 La capa de Dominio constituye el estrato más interno y aislado de la arquitectura, materializando el 
 principio de independencia tecnológica propugnado por la Arquitectura 
 Limpia~\cite{martin_clean_architecture}. Este módulo no contiene referencia alguna a marcos de trabajo 
@@ -172,7 +172,7 @@ Esta riqueza de metadatos, cuya justificación para el entrenamiento de modelos 
 fue argumentada en el Capítulo~\ref{ch:proposal}, se preserva íntegramente en la implementación del 
 dominio.
 
-\subsection{Capa de Aplicación (\texttt{Application.DermaImage})}
+\subsection{Capa de Aplicación}
 La capa de Aplicación concentra y orquesta la lógica clínica y de seguridad del sistema mediante 
 el \textbf{patrón Manager}, una variante del patrón \textit{Façade} documentado por Erich Gamma ~\cite{gamma_design_patterns}.
 Cada \textit{Manager} actúa como punto de entrada unificado 
@@ -216,7 +216,7 @@ exclusivamente para la transferencia de datos entre capas, que previenen la expo
 entidades del dominio hacia los clientes externos y permiten controlar con precisión qué atributos se 
 incluyen en cada respuesta de la API.
 
-\subsection{Capa de Infraestructura (\texttt{Infrastructure.DermaImage})}
+\subsection{Capa de Infraestructura}
 La capa de Infraestructura es la responsable de implementar las interfaces abstractas definidas en el 
 dominio utilizando tecnologías concretas. Su método de extensión \texttt{AddInfrastructure()} registra 
 todos los servicios técnicos en el contenedor de DI, incluyendo:
