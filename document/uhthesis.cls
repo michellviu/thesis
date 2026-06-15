@@ -24,7 +24,7 @@
 \RequirePackage[
 	style=numeric,
 	citestyle=numeric,
-	sorting=none,
+	sorting=nty,
   hyperref=true,
 	backref=true
 	]{biblatex}
