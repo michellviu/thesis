@@ -892,6 +892,201 @@ El sistema complementa las tablas de dominio con las tablas estándar del marco 
     \item \textbf{Identificador público único:} La tabla \texttt{Images} posee un índice único sobre \texttt{PublicId} para garantizar la unicidad del identificador público legible.
 \end{itemize}
 
+\subsubsection{Diagrama del Esquema Relacional}
+
+La Figura~\ref{fig:er_diagram} presenta el diagrama entidad-relación del esquema de base de datos, donde se visualizan las tablas principales del dominio clínico, las tablas estándar del marco de identidad y las relaciones de clave foránea que las conectan. Para mantener la legibilidad del diagrama, las tablas de dominio muestran únicamente sus campos de identificación y claves foráneas, mientras que los campos clínicos detallados se documentan exhaustivamente en las tablas precedentes.
+
+Es importante señalar que el campo \texttt{ContributorId} de la tabla \texttt{Images} almacena el identificador del usuario que subió la imagen desde una aplicación cliente externa al sistema; por consiguiente, \textbf{no constituye una clave foránea} hacia la tabla \texttt{Users} de esta base de datos, sino una referencia de trazabilidad hacia el sistema externo de captura que originó la imagen.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    % Estilo para tablas de dominio
+    entity/.style={
+        rectangle split,
+        rectangle split parts=2,
+        rectangle split part fill={blue!25, white},
+        draw=blue!60,
+        thick,
+        rounded corners=2pt,
+        text width=6.2cm,
+        font=\small,
+        inner sep=6pt,
+        align=left
+    },
+    % Estilo para tablas de identidad
+    identity/.style={
+        rectangle split,
+        rectangle split parts=2,
+        rectangle split part fill={gray!20, white},
+        draw=gray!60,
+        thick,
+        rounded corners=2pt,
+        text width=5cm,
+        font=\small,
+        inner sep=6pt,
+        align=left
+    },
+    % Estilo para tablas auxiliares compactas
+    auxiliary/.style={
+        rectangle,
+        draw=gray!50,
+        fill=gray!8,
+        thick,
+        rounded corners=2pt,
+        text width=3cm,
+        font=\small,
+        inner sep=6pt,
+        align=center,
+        minimum height=1cm
+    },
+    % Estilo de flechas FK
+    fk/.style={
+        -Stealth,
+        thick,
+        color=blue!60!black
+    },
+    fkdashed/.style={
+        -Stealth,
+        thick,
+        dashed,
+        color=gray!60!black
+    },
+    % Etiquetas de relación
+    relabel/.style={
+        font=\scriptsize\itshape,
+        text=blue!60!black,
+        fill=white,
+        inner sep=1pt
+    }
+]
+
+% === TABLA IMAGES (izquierda) ===
+\node[entity, text width=7.5cm] (images) {
+    \textbf{Images} \hfill \texttt{DermaImg}
+    \nodepart{second}
+    \underline{\texttt{Id}} \hfill \texttt{uuid PK} \\
+    \texttt{PublicId} \hfill \texttt{varchar(30) UNIQUE} \\
+    \texttt{FileName} \hfill \texttt{varchar(500)} \\
+    \texttt{FilePath} \hfill \texttt{varchar(1000)} \\
+    \texttt{ContentType} \hfill \texttt{varchar(100)} \\
+    \texttt{FileSize} \hfill \texttt{bigint} \\
+    \texttt{IsPublic} \hfill \texttt{boolean} \\
+    \texttt{IsDeleted} \hfill \texttt{boolean} \\
+    \texttt{CreatedAt} \hfill \texttt{timestamp} \\
+    \texttt{ContributorId} \hfill \texttt{uuid (externo)} \\[3pt]
+    \textit{+ 30 campos clínicos}\\
+    \textit{~~(demográficos, diagnósticos,}\\
+    \textit{~~histológicos, institucionales)}
+};
+
+% === TABLA USERS (derecha) ===
+\node[entity, right=4cm of images, text width=6.8cm] (users) {
+    \textbf{Users} \hfill \texttt{User}
+    \nodepart{second}
+    \underline{\texttt{Id}} \hfill \texttt{uuid PK} \\
+    \texttt{FirstName} \hfill \texttt{varchar(100)} \\
+    \texttt{LastName} \hfill \texttt{varchar(100)} \\
+    \texttt{Email} \hfill \texttt{varchar(256)} \\
+    \texttt{UserName} \hfill \texttt{varchar(256)} \\
+    \texttt{PasswordHash} \hfill \texttt{text} \\
+    \texttt{EmailConfirmed} \hfill \texttt{boolean} \\
+    \texttt{IsActive} \hfill \texttt{boolean} \\
+    \texttt{IsDeleted} \hfill \texttt{boolean} \\
+    \texttt{CreatedAt} \hfill \texttt{timestamp} \\
+    \texttt{SecurityStamp} \hfill \texttt{text} \\
+    \textit{+ campos de Identity}
+};
+
+% === TABLA DOWNLOAD REQUESTS (debajo de Users) ===
+\node[entity, below=2cm of users, text width=6.8cm] (downloads) {
+    \textbf{DownloadRequests} \hfill \texttt{DownloadRequest}
+    \nodepart{second}
+    \underline{\texttt{Id}} \hfill \texttt{uuid PK} \\
+    \texttt{UserId} \hfill \texttt{uuid FK $\rightarrow$ Users} \\
+    \texttt{Reason} \hfill \texttt{varchar(2000)} \\
+    \texttt{Institution} \hfill \texttt{varchar(500)} \\
+    \texttt{Status} \hfill \texttt{varchar(50)} \\
+    \texttt{ReviewedById} \hfill \texttt{uuid FK $\rightarrow$ Users} \\
+    \texttt{ReviewedAt} \hfill \texttt{timestamp} \\
+    \texttt{CreatedAt} \hfill \texttt{timestamp} \\
+    \texttt{IsDeleted} \hfill \texttt{boolean}
+};
+
+% === TABLA ROLES (derecha-arriba) ===
+\node[identity, above right=0.5cm and 1.5cm of users.north east, text width=5cm] (roles) {
+    \textbf{Roles} \hfill \texttt{IdentityRole}
+    \nodepart{second}
+    \underline{\texttt{Id}} \hfill \texttt{uuid PK} \\
+    \texttt{Name} \hfill \texttt{varchar(256)} \\
+    \texttt{NormalizedName} \hfill \texttt{varchar(256)} \\
+    \texttt{ConcurrencyStamp} \hfill \texttt{text}
+};
+
+% === TABLA USERROLES (pivote) ===
+\node[identity, below=1.2cm of roles, text width=5cm] (userroles) {
+    \textbf{UserRoles} \hfill \textit{N:M Pivote}
+    \nodepart{second}
+    \underline{\texttt{UserId}} \hfill \texttt{uuid FK $\rightarrow$ Users} \\
+    \underline{\texttt{RoleId}} \hfill \texttt{uuid FK $\rightarrow$ Roles}
+};
+
+% === TABLAS AUXILIARES (compactas) ===
+\node[auxiliary, below=1.2cm of userroles] (userclaims) {\textbf{UserClaims}\\\texttt{FK $\rightarrow$ Users}};
+\node[auxiliary, below=0.6cm of userclaims] (userlogins) {\textbf{UserLogins}\\\texttt{FK $\rightarrow$ Users}};
+\node[auxiliary, below=0.6cm of userlogins] (usertokens) {\textbf{UserTokens}\\\texttt{FK $\rightarrow$ Users}};
+\node[auxiliary, below=0.6cm of usertokens] (roleclaims) {\textbf{RoleClaims}\\\texttt{FK $\rightarrow$ Roles}};
+
+% === NOTA sobre ContributorId (debajo de Images) ===
+\node[below=0.8cm of images.south, anchor=north, text width=7.5cm, font=\scriptsize\itshape, 
+      draw=orange!60, fill=orange!5, rounded corners=2pt, inner sep=5pt] (extid_note) {
+    \texttt{ContributorId} es un identificador externo proveniente del sistema de captura de imágenes. No establece relación de clave foránea con la tabla \texttt{Users} de esta base de datos.
+};
+
+% === RELACIONES (flechas FK) ===
+
+% DownloadRequests.UserId → Users.Id (flecha izquierda)
+\draw[fk] ([xshift=-1cm]downloads.north)
+    -- node[relabel, left, pos=0.5] {UserId}
+    ([xshift=-1cm]users.south);
+
+% DownloadRequests.ReviewedById → Users.Id (flecha derecha)
+\draw[fk] ([xshift=1cm]downloads.north)
+    -- node[relabel, right, pos=0.5] {ReviewedById}
+    ([xshift=1cm]users.south);
+
+% UserRoles.UserId → Users.Id
+\draw[fkdashed] (userroles.west) -- ++(-0.5cm,0) |- node[relabel, above, pos=0.25] {UserId} ([yshift=-0.3cm]users.east);
+
+% UserRoles.RoleId → Roles.Id
+\draw[fkdashed] (userroles.north) -- node[relabel, right, pos=0.5] {RoleId} (roles.south);
+
+% Auxiliary → Users
+\draw[fkdashed] (userclaims.west) -- ++(-0.8cm,0) |- ([yshift=-0.9cm]users.east);
+\draw[fkdashed] (userlogins.west) -- ++(-0.8cm,0) |- ([yshift=-1.5cm]users.east);
+\draw[fkdashed] (usertokens.west) -- ++(-0.8cm,0) |- ([yshift=-2.1cm]users.east);
+
+% RoleClaims → Roles
+\draw[fkdashed] (roleclaims.north) -- ++(0, 0.3cm) -| ([xshift=0.3cm]roles.south);
+
+% === LEYENDA ===
+\node[below=0.5cm of extid_note.south west, anchor=north west, font=\footnotesize] (legend) {
+    \begin{tabular}{@{}cl@{}}
+        \tikz\draw[fill=blue!25, draw=blue!60, thick, rounded corners=2pt] (0,0) rectangle (0.4,0.25); & Tablas del dominio clínico \\
+        \tikz\draw[fill=gray!20, draw=gray!60, thick, rounded corners=2pt] (0,0) rectangle (0.4,0.25); & Tablas de ASP.NET Core Identity \\
+        \tikz\draw[-Stealth, thick, color=blue!60!black] (0,0.12) -- (0.6,0.12); & Clave foránea de dominio \\
+        \tikz\draw[-Stealth, thick, dashed, color=gray!60!black] (0,0.12) -- (0.6,0.12); & Clave foránea de Identity \\
+        \underline{Campo} & Clave primaria (PK) \\
+    \end{tabular}
+};
+
+\end{tikzpicture}%
+}
+\caption{Diagrama entidad-relación del esquema de base de datos de DermaUH.}
+\label{fig:er_diagram}
+\end{figure}
+
 \section{Valoración del Esquema Propuesto para el Entrenamiento de Modelos de Inteligencia Artificial}
 
 El diseño del esquema de datos presentado en este capítulo no responde únicamente a las necesidades operativas inmediatas de gestión y consulta de imágenes dermatológicas. Su concepción se fundamenta en las deficiencias estructurales identificadas durante el análisis exhaustivo del estado del arte (Capítulo~\ref{ch:estado-del-arte}), y persigue como objetivo estratégico que los datos recopilados constituyan un activo de alto valor para el entrenamiento, la validación y el ajuste fino (\textit{fine-tuning}) de modelos de aprendizaje profundo.
