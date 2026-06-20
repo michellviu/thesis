@@ -42,18 +42,18 @@ Los requerimientos funcionales especifican los comportamientos y servicios exact
 proveer a los distintos actores:
 
 \begin{itemize}
-    \item \textbf{Gestión de Imágenes Dermatológicas}: El sistema debe permitir la carga de imágenes clínicas y dermatoscópicas, extrayendo y validando rigurosamente los 
+    \item \textbf{RF-01: Gestión de Imágenes Dermatológicas}: El sistema debe permitir la carga de imágenes clínicas y dermatoscópicas, extrayendo y validando rigurosamente los 
     metadatos asociados.
-    \item \textbf{Gestión de Metadatos Clínicos}: El sistema debe soportar un esquema de metadatos 
+    \item \textbf{RF-02: Gestión de Metadatos Clínicos}: El sistema debe soportar un esquema de metadatos 
     exhaustivo para cada lesión, abarcando datos demográficos (edad, sexo biológico, color de piel, fototipo), 
     antecedentes (historial personal y familiar de melanoma, exposición solar), información patológica e 
     institucional.
-    \item \textbf{Control de Acceso y Visibilidad}: Debe ser posible clasificar las imágenes como públicas 
+    \item \textbf{RF-03: Control de Acceso y Visibilidad}: Debe ser posible clasificar las imágenes como públicas 
     o privadas. Las imágenes privadas estarán restringidas a usuarios con roles administrativos.
-    \item \textbf{Explotación Analítica y Estadística}: Se requiere que el sistema agrupe, filtre y tabule 
+    \item \textbf{RF-04: Explotación Analítica y Estadística}: Se requiere que el sistema agrupe, filtre y tabule 
     la información para generar visualizaciones y resúmenes (por ejemplo, distribución demográfica, 
     distribución espacial del melanoma en un mapa corporal).
-    \item \textbf{Descarga Masiva}: Debe habilitarse un mecanismo para la descarga de galerías de imágenes 
+    \item \textbf{RF-05: Descarga Masiva}: Debe habilitarse un mecanismo para la descarga de galerías de imágenes 
     seleccionadas en formato comprimido (ZIP), junto con los datos tabulares correspondientes normalizados 
     en archivos CSV (\textit{Comma Separated Values}).
 \end{itemize}
@@ -62,26 +62,26 @@ proveer a los distintos actores:
 \subsubsection{Requerimientos de Seguridad}
 
 \begin{itemize}
-    \item \textbf{Autenticación Robusta}: Implementación de \textit{tokens} de acceso (JWT)~\cite{rfc7519_jwt} y protección de las 
+    \item \textbf{RNF-01: Autenticación Robusta}: Implementación de \textit{tokens} de acceso (JWT)~\cite{rfc7519_jwt} y protección de las 
     rutas del API, denegando el acceso a recursos privados si el actor no posee el nivel de autorización 
     requerido~\cite{owasp_secure_default}.
-    \item \textbf{Protección de Puntos de Entrada}: Validación estricta a nivel de infraestructura para 
+    \item \textbf{RNF-02: Protección de Puntos de Entrada}: Validación estricta a nivel de infraestructura para 
     evitar manipulación de parámetros de negocio a través de validadores robustos.
-    \item \textbf{Gestión de Datos Sensibles}: El esquema de identidad debe almacenar las credenciales 
+    \item \textbf{RNF-03: Gestión de Datos Sensibles}: El esquema de identidad debe almacenar las credenciales 
     mediante funciones de hash criptográficas seguras, acoplado al marco de trabajo de identidad nativo 
     de la tecnología de desarrollo.
 \end{itemize}
 
 \subsubsection{Requerimientos de Usabilidad}
 \begin{itemize}
-    \item \textbf{Interfaz Intuitiva y Responsiva}: La interfaz web debe adaptarse fluidamente a las 
+    \item \textbf{RNF-04: Interfaz Intuitiva y Responsiva}: La interfaz web debe adaptarse fluidamente a las 
     diferentes dimensiones de pantalla y proporcionar una navegación lógica para minimizar la curva 
     de aprendizaje del personal médico.
 \end{itemize}
 
 \subsubsection{Requerimientos de Almacenamiento}
 \begin{itemize}
-    \item \textbf{Persistencia Híbrida}: La arquitectura debe separar lógicamente el almacenamiento de 
+    \item \textbf{RNF-05: Persistencia Híbrida}: La arquitectura debe separar lógicamente el almacenamiento de 
     metadatos estructurados (en bases relacionales) del almacenamiento de los archivos binarios, 
     garantizando el rendimiento ante grandes volúmenes de casos clínicos.
 \end{itemize}
@@ -90,12 +90,12 @@ proveer a los distintos actores:
 \subsection{Requerimientos de Entorno}
 Para su despliegue y operatividad, la plataforma define como requisitos técnicos y tecnológicos base:
 \begin{itemize}
-    \item \textbf{Entorno de Ejecución}: \textit{Runtime} multiplataforma compatible con distribuciones 
+    \item \textbf{RE-01: Entorno de Ejecución}: \textit{Runtime} multiplataforma compatible con distribuciones 
     de código abierto basadas en Linux (requisito mandatorio para la soberanía tecnológica en los 
     servidores locales). El sistema se basará en la plataforma SDK de .NET versión 10.0.
-    \item \textbf{Motor de Bases de Datos}: Un Sistema Gestor de Base de Datos (SGBD) relacional robusto con características avanzadas 
+    \item \textbf{RE-02: Motor de Bases de Datos}: Un Sistema Gestor de Base de Datos (SGBD) relacional robusto con características avanzadas 
     y alto rendimiento, estableciéndose como objetivo PostgreSQL.
-    \item \textbf{Servicios Externos}: Un servidor de Protocolo Simple de Transferencia de Correo (SMTP) para la emisión de notificaciones automatizadas y 
+    \item \textbf{RE-03: Servicios Externos}: Un servidor de Protocolo Simple de Transferencia de Correo (SMTP) para la emisión de notificaciones automatizadas y 
     flujos de restablecimiento de cuenta.
 \end{itemize}
 
@@ -146,6 +146,15 @@ La estructura del \textit{backend}\footnote{Backend: capa del servidor responsab
     y visualizar APIs HTTP RESTful.}~\cite{openapi_spec}.
 \end{enumerate}
 
+La elección de esta arquitectura por capas, fuertemente inspirada en los principios de la Arquitectura 
+Limpia (\textit{Clean Architecture})~\cite{martin_clean_architecture}, se justifica por la necesidad de 
+garantizar la mantenibilidad y escalabilidad del sistema a largo plazo. En el dominio médico, resulta 
+fundamental que las reglas de negocio y las validaciones clínicas permanezcan estrictamente aisladas de 
+los detalles de infraestructura o de las tecnologías de presentación. Esta separación de responsabilidades 
+no solo facilita la realización de pruebas de código, sino que también permite que componentes tecnológicos 
+externos (como el motor de base de datos o el marco de trabajo web) puedan ser actualizados o reemplazados 
+en el futuro sin comprometer la lógica central del proyecto.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{Graphics/clean-architecture.png}
@@ -160,10 +169,31 @@ interacción del usuario con el sistema.} orquesta la presentación, la navegaci
 consumiendo de forma controlada los servicios expuestos por la API, con intercambio eficiente de estados 
 y baja latencia percibida.
 
+La selección de Blazor como tecnología de \textit{frontend} responde a una decisión estratégica basada en la 
+eficiencia del ciclo de desarrollo y la optimización de la curva de aprendizaje. Dado que el ecosistema 
+tradicional de desarrollo de interfaces web modernas a menudo exige un dominio avanzado de lenguajes y 
+bibliotecas basados en JavaScript, Blazor ofrece una alternativa pragmática al permitir la construcción 
+de interfaces de usuario altamente interactivas utilizando el lenguaje C\# combinado con componentes HTML. 
+Esta característica resultó determinante para el desarrollo del proyecto, ya que posibilitó capitalizar 
+los sólidos conocimientos previos de programación en C\# ---empleados en el \textit{backend}--- para 
+implementar de manera directa la lógica de presentación del \textit{frontend}. En consecuencia, se 
+redujo drásticamente la barrera de entrada técnica y se aceleró el proceso de construcción visual del 
+sistema, logrando mantener un código fuente unificado, homogéneo y fuertemente tipado a través de todas las 
+capas de la plataforma.
+
 \subsection{Casos de Uso del Sistema}
 Los casos de uso del sistema se agrupan en módulos funcionales. Para cada caso se especifica el actor autorizado, una descripción del comportamiento y, cuando corresponde, el flujo de operaciones que sigue el sistema.
 
 \subsubsection{Módulo de Autenticación y Gestión de Cuenta}
+
+La Figura~\ref{fig:uc_autenticacion} presenta el diagrama de casos de uso correspondiente a este módulo, donde se distinguen las interacciones del usuario anónimo (registro, confirmación, inicio de sesión y recuperación de credenciales) y las del usuario autenticado (gestión de perfil y contraseña).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/uc_autenticacion.png}
+    \caption{Diagrama de casos de uso del Módulo de Autenticación y Gestión de Cuenta.}
+    \label{fig:uc_autenticacion}
+\end{figure}
 
 \paragraph{CU-01: Registrar Usuario.}
 \begin{description}
@@ -258,6 +288,15 @@ Los casos de uso del sistema se agrupan en módulos funcionales. Para cada caso 
 
 \subsubsection{Módulo de Gestión de Imágenes}
 
+La Figura~\ref{fig:uc_imagenes} muestra el diagrama de casos de uso de este módulo, donde intervienen el usuario anónimo (consulta y previsualización), el colaborador y el administrador (carga y eliminación de imágenes), así como el usuario autorizado para las descargas masivas.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/uc_imagenes.png}
+    \caption{Diagrama de casos de uso del Módulo de Gestión de Imágenes.}
+    \label{fig:uc_imagenes}
+\end{figure}
+
 \paragraph{CU-10: Consultar Galería de Imágenes.}
 \begin{description}
     \item[Actor:] Anónimo / cualquier usuario autenticado.
@@ -326,6 +365,15 @@ Los casos de uso del sistema se agrupan en módulos funcionales. Para cada caso 
 
 \subsubsection{Módulo de Gestión de Usuarios}
 
+La Figura~\ref{fig:uc_usuarios} ilustra las funcionalidades exclusivas del administrador para la gestión integral de las cuentas de usuario del sistema.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/uc_usuarios.png}
+    \caption{Diagrama de casos de uso del Módulo de Gestión de Usuarios.}
+    \label{fig:uc_usuarios}
+\end{figure}
+
 \paragraph{CU-18: Listar Todos los Usuarios.}
 \begin{description}
     \item[Actor:] Administrador.
@@ -389,6 +437,15 @@ Los casos de uso del sistema se agrupan en módulos funcionales. Para cada caso 
 
 \subsubsection{Módulo de Solicitudes de Descarga}
 
+La Figura~\ref{fig:uc_descargas} representa las interacciones del usuario autenticado (solicitud y consulta de estado) y del administrador (revisión y aprobación/rechazo) en el flujo de autorización de descargas masivas.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/uc_descargas.png}
+    \caption{Diagrama de casos de uso del Módulo de Solicitudes de Descarga.}
+    \label{fig:uc_descargas}
+\end{figure}
+
 \paragraph{CU-27: Solicitar Autorización de Descarga.}
 \begin{description}
     \item[Actor:] Usuario autenticado (cualquier rol).
@@ -440,6 +497,15 @@ Los casos de uso del sistema se agrupan en módulos funcionales. Para cada caso 
 
 \subsubsection{Módulo de Estadísticas y Analítica}
 
+Los módulos de Estadísticas, Instituciones y Metadatos, dado su carácter complementario y reducido número de casos de uso, se representan conjuntamente en la Figura~\ref{fig:uc_estadisticas}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Graphics/uc_estadisticas.png}
+    \caption{Diagrama de casos de uso de los Módulos de Estadísticas, Instituciones y Metadatos.}
+    \label{fig:uc_estadisticas}
+\end{figure}
+
 \paragraph{CU-32: Consultar Estadísticas Generales.}
 \begin{description}
     \item[Actor:] Anónimo / administrador (con datos extendidos).
@@ -480,7 +546,15 @@ verificaciones médicas transversales (por ejemplo, asegurando que métricas his
 melanoma no sean asociadas erróneamente a carcinomas inespecíficos). Una vez garantizada su 
 coherencia analítica, el gestor de archivos ubica de manera definitiva el binario de imagen 
 en un entorno aislado, previniendo colisiones lógicas, mientras delega a la capa infraestructural 
-el registro atómico y definitivo de la entidad principal.
+el registro atómico y definitivo de la entidad principal. La Figura~\ref{fig:flujo_subida} 
+detalla este proceso mediante un flujograma.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{Graphics/flujo_subida.png}
+    \caption{Flujograma del proceso de subida e integración de imágenes.}
+    \label{fig:flujo_subida}
+\end{figure}
 
 \textbf{Descarga y Exportación Masiva:}
 Al recibir una solicitud del usuario que agrupa criterios variables mediante flujos de filtros, el 
@@ -489,7 +563,14 @@ privacidad de registros privados. Posteriormente genera dinámicamente un canal 
 transitorio (\textit{stream}), donde procede a consolidar todos los ficheros de las imágenes. 
 Simultáneamente el catalogador de metadatos del proyecto compila y codifica todos los atributos 
 relacionales en un fichero textual de variables separadas por comas (CSV), ensamblando un archivo 
-ZIP.
+ZIP. La Figura~\ref{fig:flujo_descarga} presenta el flujograma correspondiente a este proceso.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{Graphics/flujo_descarga.png}
+    \caption{Flujograma del proceso de descarga y exportación masiva.}
+    \label{fig:flujo_descarga}
+\end{figure}
 
 \subsection{Esquema de Base de Datos}
 La base de datos seleccionada para el sistema es PostgreSQL~\cite{postgresql_docs}, gestionada mediante el mapeador objeto-relacional Entity Framework Core~\cite{ef_core_docs}. El esquema diseñado combina tablas propias del dominio clínico con el esquema estándar de identidad de ASP.NET Core Identity~\cite{aspnet_identity} para el control de acceso.
@@ -814,6 +895,27 @@ El sistema complementa las tablas de dominio con las tablas estándar del marco 
 \section{Valoración del Esquema Propuesto para el Entrenamiento de Modelos de Inteligencia Artificial}
 
 El diseño del esquema de datos presentado en este capítulo no responde únicamente a las necesidades operativas inmediatas de gestión y consulta de imágenes dermatológicas. Su concepción se fundamenta en las deficiencias estructurales identificadas durante el análisis exhaustivo del estado del arte (Capítulo~\ref{ch:estado-del-arte}), y persigue como objetivo estratégico que los datos recopilados constituyan un activo de alto valor para el entrenamiento, la validación y el ajuste fino (\textit{fine-tuning}) de modelos de aprendizaje profundo.
+
+La Tabla~\ref{tab:comparativa-propuesta} retoma la comparativa de los repositorios internacionales analizados, incorporando las características del esquema de base de datos propuesto para DermaUH, lo que evidencia su posicionamiento estratégico.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Comparativa de repositorios internacionales incluyendo la propuesta de DermaUH.}\label{tab:comparativa-propuesta}
+\begin{tabular}{p{2.5cm}rp{3.5cm}p{6cm}}
+\toprule
+\textbf{Repositorio} & \textbf{Imágenes} & \textbf{Fototipos (Escala Fitzpatrick)} & \textbf{Características y Metadatos Destacados} \\
+\midrule
+ISIC Archive & >500\,000 & Principalmente I--III & Archivo global masivo. Fuerte sesgo fenotípico hacia pieles claras. \\
+HAM10000 & 10\,015 & Principalmente I--III & Alta confirmación histopatológica. Edad, sexo y localización anatómica. \\
+PAD-UFES-20 & 2\,298 & I--VI (sesgo europeo local) & Capturas móviles. 26 variables clínicas y socioeconómicas. \\
+BCN20000 & 18\,946 & Principalmente I--III & Entorno clínico real con ruido. Incluye categoría fuera de distribución (OOD). \\
+Derm7pt & >2\,000 & Principalmente I--III & Mapeo con \textit{Checklist} de 7 Puntos. Ideal para Inteligencia Artificial Explicable (XAI). \\
+\midrule
+\textbf{DermaUH (Propuesta)} & \textbf{En crec.} & \textbf{I--VI (Alta representatividad III--V)} & \textbf{Alineado a ISIC. Variables demográficas, epidemiológicas e histológicas específicas de melanoma. Enfoque en equidad fenotípica local.} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Riqueza de Metadatos como Habilitador de la Inteligencia Artificial Multimodal}
 

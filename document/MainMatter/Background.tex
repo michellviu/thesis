@@ -36,7 +36,7 @@ interoperabilidad para compartir metadatos eficazmente~\cite{isic_mission}.
 
 \begin{table}[htbp]
 \centering
-\caption{Estadísticas del Archivo ISIC (Corte 2024--2025).}\label{tab:isic-stats}
+\caption{Estadísticas del Archivo ISIC ~\cite{isic_home} (Visitado el 4 de marzo de 2026).}\label{tab:isic-stats}
 \begin{tabular}{lr}
 \toprule
 \textbf{Indicador} & \textbf{Cifra} \\
@@ -253,7 +253,7 @@ A pesar de estos innegables aportes, el repositorio presenta sesgos estructurale
 con cautela. La principal deficiencia radica en su sesgo fenotípico: al carecer de metadatos explícitos 
 sobre el fototipo de piel y provenir casi en su totalidad de pacientes de ascendencia 
 europea (fototipos I a III de Fitzpatrick), se ha estimado una desproporción de 20:1 a favor de pieles 
-claras. Esta marcada asimetría compromete severamente la equidad algorítmica, propiciando fallos 
+claras~\cite{iccs_bias_derm}. Esta marcada asimetría compromete severamente la equidad algorítmica, propiciando fallos 
 sistemáticos al diagnosticar lesiones en pieles oscuras~\cite{iccs_bias_derm}. De igual manera, se 
 observa un fuerte sesgo geográfico debido a la concentración de la recolección en Australia y Austria, 
 lo que restringe su validez externa en poblaciones con epidemiologías distintas, como las de América Latina 
@@ -472,18 +472,99 @@ médica en el país.
 \section{Motivos Económicos}\label{sec:motivos-economicos}
 
 La creación de una base de datos nacional no es solo una cuestión de precisión médica, sino de viabilidad 
-financiera y supervivencia estratégica ante las restricciones externas.
+financiera y supervivencia estratégica ante las restricciones externas. Para dimensionar adecuadamente 
+esta afirmación, es necesario contrastar la realidad salarial del profesional cubano con los costos 
+internacionales que implica el desarrollo de infraestructuras de inteligencia artificial en el 
+ámbito dermatológico.
 
 
-\subsection{Economía del Etiquetado y Curación de Datos}\label{sec:etiquetado}
+\subsection{Realidad Salarial del Profesional Cubano}\label{sec:salario-cubano}
+
+Según la publicación oficial \textit{Salario Medio en Cifras. Cuba 2025} de la Oficina Nacional de 
+Estadística e Información (ONEI), el salario medio mensual del sector estatal en Cuba durante el año 
+2025 se situó en 6\,930 pesos cubanos (CUP)~\cite{onei_salario_2025}. En el sector de la salud pública, el 
+salario medio mensual estuvo incluso por debajo de la media general, situándose en 6\,635~CUP~\cite{onei_salario_2025}.
+
+Un aspecto crítico para contextualizar estas cifras es su equivalencia en divisas. Al tipo de cambio 
+del mercado informal ---que es el referente real para la adquisición de bienes e insumos en la 
+isla---, el salario medio nacional de 6\,930~CUP equivale actualmente a 10~USD mensuales aproximadamente~\cite{el_toque_exchange_rates}. 
+Esto significa que un profesional de la salud, 
+cuyo salario escala es de 6\,635~CUP, percibe un ingreso mensual inferior a 10~USD al tipo de cambio 
+real. Incluso considerando los pagos complementarios por antigüedad (entre 1\,000 y 3\,000~CUP 
+adicionales), guardias médicas y categorías docentes o científicas, el ingreso total de un especialista 
+rara vez supera los 25~USD mensuales.
+
+
+\subsection{Costos Internacionales de Anotación y Curación de Datos}\label{sec:etiquetado}
 
 El desarrollo de una base de datos propia permite optimizar el uso de los recursos humanos especializados del 
 país. El etiquetado de imágenes médicas es una tarea de alta complejidad que requiere la participación de 
-dermatólogos expertos~\cite{datavlab_annotation,medrxiv_preannotation}.
+dermatólogos expertos~\cite{datavlab_annotation,medrxiv_preannotation}. En el mercado internacional, la 
+anotación especializada de imágenes dermatológicas presenta costos que resultan prohibitivos 
+cuando se contrastan con la capacidad adquisitiva cubana.
 
-Cuba cuenta con una red de hospitales y especialistas que pueden generar este conocimiento como parte de 
-su práctica clínica e investigativa, eliminando la necesidad de importar servicios de anotación 
-costosos~\cite{fundacionuh_taller}.
+Las tarifas publicadas por proveedores internacionales de anotación ilustran esta realidad. La plataforma 
+GetAnnotator, por ejemplo, ofrece planes de suscripción mensual para anotadores dedicados, donde el plan 
+\textit{Expert} ---el único recomendado para anotación médica, que incluye personal con más de 4 años de 
+experiencia--- tiene un costo de 899~USD mensuales por anotador~\cite{getannotator_pricing}. Según 
+AnnotationBox, las tarifas por imagen para segmentación semántica oscilan entre 0,50 y 3,00~USD por 
+imagen~\cite{annotationbox_pricing}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Costos internacionales de anotación de imágenes médicas para IA (2024--2025).}\label{tab:costos-anotacion}
+\begin{tabular}{p{6.5cm}r}
+\toprule
+\textbf{Concepto} & \textbf{Costo (USD)} \\
+\midrule
+Anotación por imagen (clasificación básica)~\cite{annotationbox_pricing} & 0,02 -- 0,20 \\
+Anotación por imagen (segmentación semántica)~\cite{annotationbox_pricing} & 0,50 -- 3,00 \\
+Anotador experto médico (plan mensual)~\cite{getannotator_pricing} & 899/mes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Para ilustrar la magnitud de esta brecha, considérese un escenario conservador: la curación de un 
+\textit{dataset} de apenas 5\,000 imágenes dermatológicas con anotación experta de segmentación 
+a un costo medio de 1,50~USD por imagen representaría un gasto de 7\,500~USD, sin incluir la 
+revisión por un dermatólogo certificado. Esta cifra equivale 
+aproximadamente a \textbf{62 años de salario} de un profesional de la salud cubano.
+
+Cuba, sin embargo, cuenta con una red de hospitales y especialistas que pueden generar este conocimiento 
+como parte de su práctica clínica e investigativa, eliminando la necesidad de importar estos servicios 
+de anotación~\cite{fundacionuh_taller}. Al integrar el etiquetado de imágenes dentro del flujo de 
+trabajo habitual de los dermatólogos del sistema nacional de salud, el proyecto DermaUH transforma un 
+costo operativo que sería inalcanzable en divisas en una inversión de capital humano ya existente, 
+aprovechando la fortaleza del modelo de salud pública cubano~\cite{pmc_ciencia_innovacion_cuba}.
+
+
+\subsection{Inviabilidad Económica de la Dependencia Tecnológica Externa}\label{sec:inviabilidad-economica}
+
+Más allá del etiquetado, el ciclo completo de desarrollo de inteligencia artificial para dermatología 
+involucra costos de infraestructura computacional sustanciales. El entrenamiento de modelos de 
+aprendizaje profundo en plataformas comerciales de computación en la nube requiere instancias con 
+unidades de procesamiento gráfico (GPU) de alto rendimiento. Según las páginas oficiales de precios 
+de los principales proveedores, las tarifas bajo demanda (\textit{on-demand}) por hora de GPU 
+para entrenamiento de modelos oscilan entre 5 y 98~USD dependiendo de la arquitectura de 
+\textit{hardware}: una instancia \texttt{p5.4xlarge} con una GPU NVIDIA H100 en Amazon Web Services 
+cuesta aproximadamente 6,88~USD/hora~\cite{aws_ec2_pricing}; una instancia A2 con GPU NVIDIA A100 
+en Google Cloud se sitúa en torno a 5~USD/hora~\cite{gcp_gpu_pricing}; y la serie 
+\texttt{ND H100 v5} de Microsoft Azure alcanza los 98,32~USD/hora para una configuración 
+completa de 8~GPUs~\cite{azure_gpu_pricing}. Un proyecto de desarrollo completo, 
+incluyendo experimentación, entrenamiento y validación, puede requerir cientos o miles de horas 
+de cómputo GPU, generando presupuestos de decenas de miles de dólares solo en 
+infraestructura~\cite{aws_ec2_pricing,gcp_gpu_pricing}.
+
+En un contexto donde la adquisición de insumos médicos básicos resulta ya comprometida, destinar divisas 
+escasas a la contratación de servicios internacionales de anotación de datos o al alquiler de 
+infraestructura de cómputo en la nube resulta económicamente inviable.
+
+Estas comparaciones evidencian que la estrategia de desarrollar una base de datos propia, aprovechando 
+los recursos humanos y la infraestructura hospitalaria existentes en el sistema nacional de salud, no 
+es simplemente una opción preferible, sino la única vía económicamente viable para que Cuba participe 
+de forma soberana en la revolución de la inteligencia artificial aplicada a la 
+dermatología~\cite{pmc_ciencia_innovacion_cuba,scielosp_ciencia_cuba}.
 
 
 % Puede estar en la tesis pero no aqui por ahora.
@@ -542,6 +623,26 @@ sustituir importaciones y exportar servicios de alto valor agregado~\cite{pmc_ci
 El análisis del estado del arte y de las condiciones específicas del entorno cubano demuestra que la creación 
 de una base de imágenes propia para el proyecto DermaUH es una decisión estratégica fundamentada en razones 
 técnicas, económicas y éticas insoslayables.
+
+La Tabla~\ref{tab:comparativa-repositorios} resume las características principales de los repositorios internacionales analizados en este capítulo, evidenciando las fortalezas y brechas fenotípicas que justifican la necesidad de una base de datos nacional.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Comparativa de los repositorios dermatológicos internacionales analizados.}\label{tab:comparativa-repositorios}
+\begin{tabular}{p{2.5cm}rp{3.5cm}p{6cm}}
+\toprule
+\textbf{Repositorio} & \textbf{Imágenes} & \textbf{Fototipos (Escala Fitzpatrick)} & \textbf{Características y Metadatos Destacados} \\
+\midrule
+ISIC Archive & >500\,000 & Principalmente I--III & Archivo global masivo. Fuerte sesgo fenotípico hacia pieles claras. \\
+HAM10000 & 10\,015 & Principalmente I--III & Alta confirmación histopatológica. Metadatos de edad, sexo y localización anatómica. Limitado a 7 clases diagnósticas. \\
+PAD-UFES-20 & 2\,298 & I--VI (sesgo europeo local) & Capturas exclusivas con teléfonos inteligentes. 26 variables estructuradas, incluyendo contexto socioeconómico. \\
+BCN20000 & 18\,946 & Principalmente I--III & Imágenes de entorno clínico real con ruido visual y oclusiones. Incluye categoría fuera de distribución (OOD). \\
+Derm7pt & >2\,000 & Principalmente I--III & Mapeo explícito con el \textit{Checklist} de 7 Puntos. Ideal para Inteligencia Artificial Explicable (XAI). \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 La dependencia de fuentes externas no solo compromete la precisión del diagnóstico por la falta de 
 representatividad fenotípica y epidemiológica, sino que también vulnera la soberanía tecnológica del país. 
 Un repositorio nacional, rico en imágenes de pieles mestizas y afecciones endémicas, permitirá a Cuba 

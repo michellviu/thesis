@@ -452,8 +452,13 @@ declaraciones: el identificador único del usuario (\texttt{sub}), la dirección
 electrónico (\texttt{email}), el nombre completo (\texttt{name}) y los roles asignados (\texttt{role}). 
 La firma se produce mediante el algoritmo \textbf{HMAC-SHA256}~\cite{rfc2104_hmac}, que garantiza la 
 integridad del token utilizando una clave simétrica secreta compartida exclusivamente por los componentes 
-del servidor. El tiempo de expiración se configura en 1440 minutos (24 horas) por defecto, equilibrando 
-la comodidad del usuario con la ventana de exposición en caso de compromiso del token.
+del servidor. El tiempo de expiración se configura en 1440 minutos (24 horas) por defecto. Esta 
+decisión técnica se justifica al establecer un equilibrio entre la seguridad del sistema y la 
+comodidad del usuario: un tiempo de vida de 24 horas es lo suficientemente corto para mitigar la ventana 
+de vulnerabilidad en caso de que el token sea comprometido o interceptado, y simultáneamente es lo 
+bastante extenso para evitar que los especialistas médicos e investigadores ---quienes a menudo operan 
+en turnos clínicos prolongados--- sufran interrupciones en su flujo de trabajo al verse obligados a 
+autenticarse múltiples veces durante una misma jornada laboral.
 
 La validación de los tokens entrantes se configura en la capa de infraestructura con parámetros estrictos: 
 se verifican el emisor (\texttt{ValidateIssuer}), la audiencia (\texttt{ValidateAudience}), la firma 
@@ -543,7 +548,11 @@ el sistema ejecuta las siguientes etapas en orden estricto:
 
 \subsection{Validación Clínica con Reglas Condicionales}\label{sec:validacion_clinica}
 El sistema aplica reglas de validación clínica que trascienden las restricciones simples de campos 
-obligatorios, implementando un árbol de decisión médica que garantiza la coherencia interna de cada registro:
+obligatorios, implementando un árbol de decisión médica que garantiza la coherencia interna de cada registro. 
+Para la formulación de estas reglas condicionales se tomó como referencia la estructura del repositorio 
+ISIC~\cite{isic_home}, el cual constituye el estándar internacional por excelencia en la dermatología 
+computacional y ha sido desarrollado gracias a la colaboración constante de múltiples especialistas y centros 
+de investigación a nivel global:
 
 \begin{longtable}{|p{7cm}|p{7.5cm}|}
 \hline
@@ -714,12 +723,13 @@ canal de \textit{middleware}. \\
 \hline
 \end{longtable}
 
-\section{Pruebas Funcionales}
-Con el propósito de validar el correcto funcionamiento de los módulos implementados y evidenciar la
-materialización de los requisitos funcionales especificados en el diseño del sistema, se presenta a
-continuación un recorrido visual por los principales paneles de la aplicación DermaUH Images. Cada
-captura de pantalla documenta el estado operativo de un componente específico de la interfaz, permitiendo
-al lector verificar la coherencia entre el diseño propuesto y la implementación final desplegada.
+\section{Recorrido Visual de la Plataforma}
+El presente apartado ofrece una demostración integral mediante un recorrido visual por las interfaces 
+gráficas y paneles principales de la aplicación DermaUH Images. El propósito de esta sección es ilustrar de 
+manera tangible la materialización de los requisitos funcionales definidos durante la fase de diseño. A través 
+de este conjunto de capturas de pantalla, se documenta el estado operativo de los componentes, el flujo de 
+interacción y la coherencia estética de la interfaz, permitiendo al lector apreciar el resultado final 
+de la implementación desde la perspectiva del usuario.
 
 \subsection{Página de Inicio y Navegación Principal}
 La página de inicio constituye el punto de entrada principal al ecosistema DermaUH Images. Desde esta
@@ -827,7 +837,7 @@ sus metadatos diagnósticos principales.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_Galeria.png}
-    \caption{Galería de exploración de imágenes dermatológicas.}
+    \caption{Galería de exploración de imágenes dermatoscópicas.}
     \label{fig:galeria}
 \end{figure}
 
@@ -853,14 +863,14 @@ el método de confirmación diagnóstica y los atributos adicionales relevantes 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_detalle_Imagen_1.png}
-    \caption{Vista de detalle de imagen dermatológica (parte superior).}
+    \caption{Vista de detalle de imagen dermatoscópica (parte superior).}
     \label{fig:detalle_imagen_1}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{Graphics/Pruebas Funcionales/Pagina_detalle_Imagen_2.png}
-    \caption{Vista de detalle de imagen dermatológica (parte inferior).}
+    \caption{Vista de detalle de imagen dermatoscópica (parte inferior).}
     \label{fig:detalle_imagen_2}
 \end{figure}
 
