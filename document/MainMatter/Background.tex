@@ -308,23 +308,68 @@ móviles sin filtros automáticos de calidad en el momento de la captura~\cite{p
 \subsubsection{Tecnologías Derivadas: Filtros de Calidad y Explicabilidad}
 
 Las limitaciones técnicas de PAD-UFES-20 han servido como catalizador para el desarrollo de herramientas 
-complementarias en el ámbito académico. Para abordar la variabilidad en las capturas móviles, 
-han emergido \textit{frameworks} de investigación como DermAI. Este ecosistema implementa redes neuronales 
-directamente en el dispositivo para actuar como un filtro de calidad en 
-tiempo real, evaluando indicadores de nitidez, desenfoque y exposición antes de la inferencia clínica. 
-Esto permite plantear soluciones al ruido técnico característico de las adquisiciones masivas presentes 
-en PAD-UFES-20~\cite{arxiv_dermai}.
+complementarias en el ámbito académico, demostrando que un repositorio de acceso abierto puede catalizar 
+todo un ecosistema de innovación. Dos proyectos recientes ilustran con especial claridad este fenómeno: 
+DermAI, orientado al control de calidad en la adquisición de imágenes, y DermaSynth, centrado en la 
+generación de datos sintéticos para modelos de lenguaje visual.
 
-Por otro lado, para cubrir la necesidad de explicabilidad y la escasez de datos masivos, PAD-UFES-20 ha 
-sido utilizado como pilar fundacional en herramientas de generación sintética como DermaSynth. Al combinar 
-los ricos metadatos abiertos de PAD-UFES-20 con modelos de lenguaje de gran escala, DermaSynth ha creado 
-más de 90\,000 pares de imagen y texto, dotando a la inteligencia artificial de una capacidad 
-argumentativa (XAI). Es crítico destacar que, a diferencia del acceso abierto y permisivo de PAD-UFES-20, 
-los modelos sintéticos derivados como DermatoLlama están estrictamente restringidos al uso académico y 
-no comercial, debido a las licencias subyacentes restrictivas de los modelos corporativos utilizados para 
-su creación. Así, PAD-UFES-20 no solo funciona como un repositorio primario 
+\paragraph{DermAI: Adquisición Clínica Guiada por Calidad.}
+Para abordar la variabilidad inherente a las capturas con dispositivos móviles ---problema ampliamente 
+documentado en PAD-UFES-20---, investigadores de la Universidade Federal de Pernambuco (Brasil) 
+desarrollaron DermAI, una aplicación ligera basada en \textit{smartphones} que gestiona el ciclo completo 
+de adquisición, anotación y clasificación de lesiones cutáneas durante la consulta clínica 
+rutinaria~\cite{arxiv_dermai}. A diferencia de herramientas previas centradas exclusivamente en la 
+dermatoscopia, DermAI opera directamente sobre fotografías clínicas convencionales e implementa 
+verificaciones automáticas de calidad en el propio dispositivo, evaluando indicadores de nitidez, 
+desenfoque y exposición luminosa antes de permitir la captura definitiva. Este filtrado en tiempo real 
+garantiza que las imágenes incorporadas al repositorio cumplan con umbrales mínimos de calidad técnica, 
+reduciendo drásticamente el ruido visual que compromete la inferencia de los modelos de aprendizaje 
+profundo~\cite{arxiv_dermai}.
+
+Un hallazgo metodológico de singular relevancia emergió de los experimentos preliminares del proyecto: los 
+modelos de clasificación entrenados exclusivamente con datasets públicos internacionales ---como ISIC o 
+HAM10000--- fracasaron al generalizar sobre las muestras clínicas recolectadas localmente por DermAI, las 
+cuales exhiben una mayor diversidad de tonos de piel, etnias y dispositivos de 
+captura~\cite{arxiv_dermai}. No obstante, el ajuste fino (\textit{fine-tuning}) con datos locales mejoró 
+significativamente el rendimiento predictivo, confirmando empíricamente la hipótesis central que sustenta 
+iniciativas como DermaUH: la recolección estandarizada y diversa de datos propios, alineada con las 
+necesidades epidemiológicas del entorno clínico local, constituye un requisito indispensable para el 
+despliegue exitoso de la inteligencia artificial dermatológica.
+
+\paragraph{DermaSynth: Datos Sintéticos para Modelos de Lenguaje Visual.}
+Para cubrir simultáneamente la necesidad de explicabilidad clínica y la escasez crónica de pares 
+imagen-texto en dermatología, el proyecto DermaSynth propuso un enfoque complementario de generación 
+sintética a gran escala~\cite{arxiv_dermasynth}. Utilizando modelos de lenguaje de última generación 
+---concretamente Gemini~2.0--- y una metodología de auto-instrucción (\textit{self-instruct}), los 
+autores procesaron 45\,205 imágenes procedentes de cinco repositorios con licencias permisivas 
+CC-BY-4.0 (DERM12345, BCN20000, PAD-UFES-20, SCIN y HIBA) para generar un corpus de 92\,020 pares 
+sintéticos de imagen y texto clínico~\cite{arxiv_dermasynth}. Un aspecto metodológico crucial del 
+proceso es la incorporación explícita de los metadatos estructurados de cada repositorio fuente 
+---incluidas las 26 variables clínicas y socioeconómicas de PAD-UFES-20--- dentro de los 
+\textit{prompts} de generación, con el propósito de anclar las descripciones a hechos verificables y 
+minimizar las alucinaciones del modelo generativo.
+
+Este \textit{dataset} sintético constituyó la base para el ajuste fino de DermatoLlama~1.0, un modelo 
+de lenguaje visual basado en la arquitectura Llama-3.2-11B-Vision-Instruct, diseñado para la generación 
+automática de reportes dermatológicos y el razonamiento clínico~\cite{arxiv_dermasynth,medrxiv_scalemed}. 
+El \textit{framework} SCALEMED (\textit{Scalable Clinical Assistants and LEarning for MEDicine}), dentro 
+del cual se enmarca DermatoLlama, escaló posteriormente el conjunto sintético a más de 1,2 millones de 
+muestras, validando la viabilidad de modelos eficientes desplegables en entornos con recursos 
+computacionales limitados~\cite{medrxiv_scalemed}.
+
+Es imperativo destacar, sin embargo, una tensión inherente en la cadena de licencias de este ecosistema. 
+Mientras que los repositorios fuente como PAD-UFES-20 mantienen un acceso abierto y permisivo bajo 
+licencias CC-BY-4.0, los modelos derivados como DermatoLlama heredan las restricciones impuestas por 
+los modelos fundacionales corporativos utilizados en su creación ---tanto Gemini como Llama poseen 
+cláusulas de uso no comercial---, quedando estrictamente limitados al ámbito 
+académico~\cite{arxiv_dermasynth,medrxiv_scalemed}.
+
+En conjunto, DermAI y DermaSynth demuestran que PAD-UFES-20 no solo funciona como un repositorio primario 
 fundamental, sino como el cimiento de código abierto sobre el cual se construyen y evalúan las nuevas 
-arquitecturas de triaje dermatológico.
+arquitecturas de adquisición inteligente y triaje dermatológico. Ambas herramientas refuerzan, además, la 
+tesis de que la soberanía sobre los datos de entrenamiento ---desde su captura estandarizada hasta su 
+enriquecimiento sintético--- es la piedra angular de cualquier estrategia de inteligencia artificial 
+médica sostenible, un principio que el proyecto DermaUH abraza desde su concepción.
 
 
 \subsection{BCN20000: Lesiones en Entornos Clínicos Reales}\label{sec:bcn20000}
